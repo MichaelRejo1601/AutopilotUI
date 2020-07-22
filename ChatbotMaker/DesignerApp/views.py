@@ -18,3 +18,6 @@ def test(request):
                    .tasks(str(task)).task_actions().fetch().data)
     context = {'test': test}
     return render(request, "test.html", context)
+
+def create_post(request):
+    

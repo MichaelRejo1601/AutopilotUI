@@ -17,6 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from DesignerApp import views
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('test/', views.test, name='test'),
+    path('admin/', admin.site.urls),#Admin Site
+    path('test/', views.test, name='test'),#Test Site
+    path('login/', views.login, name='login'),#Stale Login Page
+    path('assistants/', views.get_assistants, name='get_assistants'),#Gives a list of all assistants with details
+    #path('assistants/<str:assistant>/', views.get_assistant, name='get_assistant'),#Useless
+    path('assistants/<str:assistant>/tasks/', views.get_tasks, name='get_tasks'),#Gives tasks page where you see details of all your tasks
+    path('assistants/<str:assistant>/tasks/<str:task>/', views.get_task, name='get_task'),#Gets the specific edit page for a Task
+    path('assistants/<str:assistant>/tree', views.tree, name='tree'),#Shows a page with the tree of tasks.
+    path('assistants/<str:assistant>/create_task', views.tree, name='create_task'),#Create a whole new task.
 ]
