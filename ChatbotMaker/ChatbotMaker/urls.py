@@ -24,6 +24,6 @@ urlpatterns = [
     #path('assistants/<str:assistant>/', views.get_assistant, name='get_assistant'),#Useless
     path('assistants/<str:assistant_sid>/tasks/', views.get_tasks, name='get_tasks'),#Gives tasks page where you see details of all your tasks
     path('assistants/<str:assistant_sid>/tasks/<str:task_sid>/', views.get_task, name='get_task'),#Gets the specific edit page for a Task
-    # path('assistants/<str:assistant_sid>/tree', views.tree, name='tree'),#Shows a page with the tree of tasks.
+    path('assistants/<str:assistant_sid>/tree', views.tree, name='tree'),#Shows a page with the tree of tasks.
     # path('assistants/<str:assistant>/tasks/create_task', views.create_task, name='create_task'),#Create a whole new task.
 ]

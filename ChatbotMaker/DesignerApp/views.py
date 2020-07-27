@@ -4,7 +4,8 @@ from twilio.base.exceptions import TwilioRestException
 from .config import *
 from .models import *
 from .forms import *
-
+from collections import OrderedDict
+from .node import Node
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
 
@@ -68,4 +69,22 @@ def get_task(request, assistant_sid, task_sid):
             .tasks(task_sid).update(unique_name=request.POST.get('unique_name'))
         except TwilioRestException:
             print("Yikes Dawg")
-    return render(request, 'task.html', {'assistant':assistant, 'task':task,})
+    return render(request, 'task.html', {'assistant':assistant, 'task':task})
+
+def tree(request, assistant_sid):
+    first = "Task 1"
+    dict = OrderedDict()
+    node = Node(first)
+    assistant = Assistant.objects.get(sid=assistant_sid)
+    tasks = client.autopilot \
+        .assistants(assistant.sid) \
+        .tasks.list()
+    for task in Relationship.objects.values('parent').distinct():
+        print(task)
+        dict[task["parent"]] = Node(task)
+        for relationship in Relationship.objects.filter(parent=task['parent']):
+            print(relationship)
+            dict[task['parent']].add_child(relationship.child)
+    print(dict[first].children)
+    context = {'assistant':assistant}
+    return render(request, 'tree.html', context)
