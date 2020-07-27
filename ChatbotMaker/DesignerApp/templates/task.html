@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+  </head>
+  <body>
+
+      <form action='/assistants/{{assistant.sid}}/tasks/{{task.sid}}/' method='post' name='change_unique_name'>
+        {% csrf_token %}
+        <label for="unique_name">New Name:</label>
+        <input type="text" name="unique_name" value="{{task.unique_name}}">
+      </form>
+
+    <script src="{% static 'main.js' %}"></script>
+  </body>
+</html>

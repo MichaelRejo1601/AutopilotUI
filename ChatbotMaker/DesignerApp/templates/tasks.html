@@ -1,0 +1,20 @@
+<!-- <form action="/assistants/{{assistant.sid}}/tasks/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form> -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    {% for task in tasks %}
+    <div>
+      <h2><a href='/assistants/{{assistant.sid}}/tasks/{{task.sid}}/'>{{task.unique_name}}</a></h2>
+      <h6>{{task.sid}}</h6>
+    </div>
+    {% endfor %}
+  </body>
+</html>

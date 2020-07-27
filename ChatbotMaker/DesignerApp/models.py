@@ -13,12 +13,12 @@ class Task(models.Model):
     sid = models.CharField(max_length=256)
     unique_name = models.CharField(max_length=256)
     def __str__(self):
-        return self.sid
+        return self.unique_name
 
 class Relationship(models.Model):
     '''Every relationship between tasks'''
-    parent = models.CharField()
-    child = models.CharField()
+    parent = models.CharField(max_length=256)
+    child = models.CharField(max_length=256)
     assistant = models.ForeignKey('Assistant', on_delete=models.CASCADE, related_name='relationships')
     def __str__(self):
         return self.parent + "->" + self.child

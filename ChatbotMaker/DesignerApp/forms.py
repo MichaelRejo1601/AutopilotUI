@@ -1,20 +1,26 @@
 from django import forms
 from . import models
 
-class CreateAssistant(forms.ModelForm):
+class AssistantForm(forms.ModelForm):
     '''Creates an Assistant from form data'''
     class Meta:
         model = models.Assistant
         fields = ['sid']
         labels = {
-                'sid': 'Assistant SID: ',
+                'sid': 'Assistant SID',
             }
 
-class CreateTask(forms.ModelForm):
+class TaskForm(forms.ModelForm):
     '''Creates a Task from form data'''
     class Meta:
         model = models.Task
-        fields = ['sid', 'unique_name']
+        fields = ['sid', 'unique_name', 'assistant']
         labels = {
-                'sid': 'Task SID: ',
+                'sid': 'Task SID',
+                'unique_name': 'Unique Name',
             }
+        widgets = {
+            'assistant': forms.HiddenInput(),
+            'sid': forms.HiddenInput()
+
+        }
