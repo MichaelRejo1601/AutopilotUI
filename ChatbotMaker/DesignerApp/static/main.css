@@ -1,0 +1,13 @@
+html {
+  scroll-behavior: smooth;
+}
+.node{
+  margin-bottom: 10%;
+}
+#indicator{
+  border: 2px solid lightblue;
+  border-radius: 10px
+}
+#endpoint{
+  color: red;
+}

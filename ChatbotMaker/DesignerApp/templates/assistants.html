@@ -1,0 +1,7 @@
+<h1>[ASSISTANTS_CHANGE_NAME]: </h1>
+{% for assistant in assistants %}
+<div>
+  <h2><a href='/assistants/{{assistant.sid}}/'>{{assistant.unique_name}}</a></h2>
+  <h6>{{assistant.sid}}</h6>
+</div>
+{% endfor %}

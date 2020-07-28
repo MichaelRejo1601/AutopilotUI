@@ -1,0 +1,11 @@
+<form action='/assistants/{{assistant.sid}}/' method='post' name='change_unique_name'>
+  {% csrf_token %}
+  <input type="text" name="unique_name" value="{{assistant.unique_name}}">
+</form>
+<h3>{{assistant.sid}}</h3>
+
+<h4><a href='/assistants/{{assistant.sid}}/tasks/'>Tasks</a></h4>
+<h4><a href='/assistants/{{assistant.sid}}/config/'>Config</a></h4>
+<h4><a href='/assistants/{{assistant.sid}}/tree/'>Tree</a></h4>
+<h4><a href='/assistants/{{assistant.sid}}/simulator/'>Simulator</a></h4>
+<h4><a href='/assistants/{{assistant.sid}}/fields/'>Fields</a></h4>

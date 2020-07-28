@@ -20,7 +20,21 @@ def test(request):
                    .tasks(str(task)).task_actions().fetch().data)
     context = {'test': test}
     return render(request, "test.html", context)
-
+def get_assistants(request):
+    assistants = client.autopilot \
+        .assistants.list()
+    return render(request, 'assistants.html', {'assistants':assistants})
+def get_assistant(request, assistant_sid):
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
+    if request.method == "POST":
+        try:
+            tasks = client.autopilot \
+            .assistants(assistant_sid) \
+            .update(unique_name=request.POST.get('unique_name'))
+        except TwilioRestException:
+            print("Yikes Dawg but for Assistant")
+    return render(request, 'assistant.html', {'assistant': assistant})
 def get_tasks(request, assistant_sid):
     assistant = Assistant.objects.get(sid=assistant_sid)
     tasks = client.autopilot \

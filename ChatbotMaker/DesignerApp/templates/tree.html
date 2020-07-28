@@ -1,11 +1,27 @@
-<ul>
-  {% for node in pc_list %}
-    <li>{{node.value}}</li>
-    <ul>
-    {% for child in node.children %}
-      <li>{{child}}</li>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+  </head>
+  <body>
+    <h1>[Task] Tree</h1>
+    {% for node in pc_list %}
+      <div class="node">
+        <ul>
+          <li class="parent" id="{{node.value}}parent"><a href="#{{node.value}}parent" onclick="findParent('{{node.value}}')">{{node.value}}</a></li>
+          <ul>
+          {% for child in node.children %}
+            <li class="child" id="{{child}}child"><a href="#{{child}}parent" onclick="findParent('{{child}}')">{{child}}</a></li>
+          {% endfor %}
+          </ul>
+        </ul>
+      </div>
     {% endfor %}
-    </ul>
-  {% endfor %}
-</ul>
-{{pc_list.children}}
+
+    {{pc_list.children}}
+  </body>
+  <script src="{% static 'main.js' %}"></script>
+</html>
