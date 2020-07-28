@@ -1,0 +1,11 @@
+<ul>
+  {% for node in pc_list %}
+    <li>{{node.value}}</li>
+    <ul>
+    {% for child in node.children %}
+      <li>{{child}}</li>
+    {% endfor %}
+    </ul>
+  {% endfor %}
+</ul>
+{{pc_list.children}}

@@ -81,10 +81,15 @@ def tree(request, assistant_sid):
         .tasks.list()
     for task in Relationship.objects.values('parent').distinct():
         print(task)
-        dict[task["parent"]] = Node(task)
+        dict[task["parent"]] = Node(task["parent"])
         for relationship in Relationship.objects.filter(parent=task['parent']):
             print(relationship)
             dict[task['parent']].add_child(relationship.child)
-    print(dict[first].children)
-    context = {'assistant':assistant}
+    print(list(dict.values())[0].children)
+    pc_list = []
+    for i in dict.keys():
+        pc_list.append(dict[i])
+    print(pc_list)
+    print(pc_list[0].children)
+    context = {'assistant':assistant, 'pc_list':pc_list}
     return render(request, 'tree.html', context)
