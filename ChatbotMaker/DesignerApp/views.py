@@ -85,6 +85,65 @@ def get_task(request, assistant_sid, task_sid):
             print("Yikes Dawg")
     return render(request, 'task.html', {'assistant':assistant, 'task':task})
 
+def edit_actions(request, assistant_sid, task_sid):
+    test = '<h1>BOLD</h1>'
+    try:
+        task = client.autopilot \
+        .assistants(assistant_sid) \
+        .tasks(task_sid).task_actions.get().fetch().data
+    except TwilioRestException:
+        print("Yikes Dawg")
+    options = {
+        "say":"""<div class='inline-form'>
+        <legend>Say</legend>
+        <label for='text'>Text</label>
+        <input required type="text" name='text' placeholder='Hello!'/>
+      </div>""",
+        "play":"""<div class='inline-form'>
+        <legend>Play</legend>
+        <label for='loop'>Loop</label>
+        <input required type="number" name='loop' placeholder='3'/>
+        <label for='url'>URL</label>
+        <input required type="url" name='url' placeholder='https://www.mysite.com/song.mp3'/>
+      </div>""",
+        "listen":"""<div class='inline-form'>
+        <legend>Listen</legend>
+        <label for="tasks">Tasks</label>
+        <input type="text" name='tasks' placeholder='task-1, task-2, task-3'/>
+      </div>""",
+        "collect":"""<h1>BOLD</h1>""",
+        "handoff":"""<div class='inline-form'>
+        <legend>Handoff</legend>
+        <label for="chanel">Chanel</label>
+        <select name="chanel"><option>voice</option></select>
+        <label for="uri">TwiML URI</label>
+        <input required type="url" name='uri' placeholder='TwiML URI'/>
+        <label for="method">Method</label>
+        <select name="method"><option>POST</option><option>GET</option></select>
+      </div>""",
+        "redirect":"""<div class='inline-form'>
+        <legend>Redirect</legend>
+        <label for="url">URL</label>
+        <input required type="url" name='url' placeholder='https://www.mysite.com/my-redirect/'/>
+        <label for="method">Method</label>
+        <select name="method"><option>POST</option><option>GET</option></select>
+        <h3>OR</h3>
+        <label for="task">Task</label>
+        <input required type="text" name='task' placeholder='task://my-task1'/>
+      </div>""",
+        "remember":"""<div class='inline-form'>
+        <legend>Remember</legend>
+        <label for="url">URL</label>
+        <input required type="url" name='url' placeholder='https://www.mysite.com/my-redirect/'/>
+      </div>""",
+        "show":"""<h1>BOLD</h1>""",
+    }
+    form_elements = ""
+    for element in task["actions"]:
+        form_elements += options[next(iter((element)))]
+    print(form_elements)
+    return render(request, 'edit.html', {'test':test, "form_elements":form_elements,})
+
 def tree(request, assistant_sid):
     first = "Task 1"
     dict = OrderedDict()
