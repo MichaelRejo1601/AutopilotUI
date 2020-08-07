@@ -1,14 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang='en' dir='ltr'>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <title></title>
     {% load static %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static 'jquery.serialize-object.min.js' %}"></script>
+    {% load crispy_forms_tags %}
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
   </head>
   <body>
-    <form id="actions-form" action='/assistants/{{assistant.sid}}/tasks/{{task.sid}}/edit/' method='POST' name='update'>
+    {{error}}
+    <div id="add-action-menu">
+      <button id="add-action">+</button>
+      <div id="menu">
+       <div id="new-action">say</div>
+       <div id="new-action">listen</div>
+       <div id="new-action">play</div>
+       <div id="new-action">handoff</div>
+       <div id="new-action">redirect</div>
+      </div>
+    </div>
+    <form id='actions-form' action='/assistants/{{assistant.sid}}/tasks/{{task.sid}}/edit/' method='POST' name='actions-form'>
       {% csrf_token %}
       <!-- <label for='action'>action</label>
       <select id='action' name='action'>
@@ -22,47 +35,41 @@
         <option value=show>show</option>
       </select>
       <div class='inline-form'>
-        <legend>Say</legend>
+        <legend>Say</legend><button id="action">-</button>
         <label for='speech'>Text</label>
-        <input required id="speech" type="text" name='actions[][say][speech]' placeholder='Hello!'/>
+        <input required id='speech' type='text' name='actions[{order}][say][speech]' placeholder='Hello!'/>
       </div>
       <div class='inline-form'>
         <legend>Play</legend>
-        <label for='loop'>Loop</label>
-        <input type="number" id="loop" name='actions[][play][loop]' placeholder='3'/>
+        <label for='loop'>Loop</label><button id="action">-</button>
+        <input type='number' id='loop' name='actions[{order}][play][loop]' placeholder='3'/>
         <label for='url'>URL</label>
-        <input required id="url" type="url" name='actions[][play][url]' placeholder='https://www.mysite.com/song.mp3'/>
+        <input required id='url' type='url' name='actions[{order}][play][url]' placeholder='https://www.mysite.com/song.mp3'/>
       </div>
-      <div class='inline-form'>
-        <legend>Listen</legend>
-        <label for="tasks">Tasks</label>
-        <input type="text" id="tasks" name='actions[][listen][tasks][]' placeholder='task-1'/>
+      <div id='listen' class='inline-form'>
+        <legend>Listen</legend><button id="action">-</button>
+        <label for='tasks'>Tasks</label><button id="add-listen"></button>
+        <input type='text' id='tasks' name='actions[{order}][listen][tasks][]' placeholder='task-1'/>
       </div>
       <div class='inline-form'>
         <legend>Handoff</legend>
-        <label for="chanel">Chanel</label>
-        <select required id="chanel" name="actions[][handoff][chanel]"><option>voice</option></select>
-        <label for="uri">TwiML URI</label>
-        <input required id="uri" type="url" name='actions[][handoff][uri]' placeholder='TwiML URI'/>
-        <label for="method">Method</label>
-        <select id="method" name="actions[][handoff][method]"><option>GET</option><option>POST</option></select>
+        <label for='chanel'>Chanel</label>
+        <select required id='chanel' name='actions[{order}][handoff][chanel]'><option>voice</option></select>
+        <label for='uri'>TwiML URI</label>
+        <input required id='uri' type='url' name='actions[{order}][handoff][uri]' placeholder='TwiML URI'/>
+        <label for='method'>Method</label>
+        <select id='method' name='actions[{order}][handoff][method]'><option>GET</option><option>POST</option></select>
       </div>
       <div class='inline-form'>
         <legend>Redirect</legend>
-        <label for="url">URL</label>
-        <input required id="url" type="url" name='actions[][redirect][url]' placeholder='https://www.mysite.com/my-redirect/'/>
-        <h3>OR</h3>
-        <label for="task">Task or URL</label>
-        <input required id="task" type="text" name='actions[][redirect]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>
-        <label for="method">Method</label>
-        <select id="method" name="actions[][redirect][method]"><option>GET</option><option>POST</option></select>
+        <label for='task'>Task or URL</label>
+        <input required id='task' type='text' name='actions[{order}][redirect]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>
+        <label for='method'>Method</label>
+        <select id='method' name='actions[{order}][redirect][method]'><option>GET</option><option>POST</option></select>
       </div> -->
       {{form_elements|safe}}
     </form>
-    <button onclick="javascript:createJSON()"></button>
-    <div id="test">
-      Test
-    </div>
+    <button onclick='javascript:createJSON()'>Save</button>
   </body>
-  <script src="{% static 'edit.js' %}"></script>
+  <script src='{% static 'edit.js' %}'></script>
 </html>

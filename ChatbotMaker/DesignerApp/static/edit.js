@@ -57,7 +57,7 @@ function clean(obj, bstring, bobj, barray){
     }
     if (Array.isArray(new_obj[atr])){
       if(JSON.stringify(new_obj[atr]) == JSON.stringify(barray)){
-        console.log(delete new_obj[atr]);
+        delete new_obj[atr];
       }
     }
   }
@@ -72,12 +72,49 @@ function createJSON(){
   // for (input in list[0].innerHTML.getElementsByTagName("input"))
   // console.log(obj)
   var obj = $("#actions-form").serializeObject();
-  delete obj.csrfmiddlewaretoken;
-  if(JSON.stringify(clean(obj["listen"], bstring, bobj, barray)) == JSON.stringify(bobj))
-  {
-    obj["listen"] = true;
+  var token = obj.csrfmiddlewaretoken
+  delete obj.csrfmiddlewaretoken
+  if(JSON.stringify(clean(obj["actions"][document.getElementById("tasks").name.match(/(\d+)/)[0]]["listen"], bstring, bobj, barray)) == JSON.stringify(bobj)){
+    obj["actions"][1]["listen"] = true;
   }
-  obj = clean(obj, bstring, bobj, barray)
+  obj = clean(obj, bstring, bobj, barray);
   console.log(obj);
-  console.log(JSON.stringify(obj));
+  $.post(window.location.href, {data:JSON.stringify(obj),csrfmiddlewaretoken:token})
 }
+function callBack(data) {
+      // If the $.post was successful
+      success: function suc(data) {
+          // do stuff
+          console.log(data); // returned from your endpoint
+      }
+}
+$('#menu').toggle(false);
+$(document).ready(function(){
+      $("#add-listen").click(function(){
+          $("#listen").append("<input type='text' id='tasks' name='actions["+ document.getElementById("tasks").name.match(/(\d+)/)[0] +"][listen][tasks][]' placeholder='task-x'/>");
+      });
+      $(document).on("click", "#tasks" , function() {
+          $(this).remove();
+      });
+      $(document).on("click", "#action" , function() {
+          $(this).parent().remove();
+      });
+      $(document).on("click", "#new-action" , function() {
+          $('#menu').toggle();
+          $("#add-action").toggleClass('rotate');
+          var arr = [];
+          var list = document.getElementsByClassName('inline-form');
+          for (i = 0; i < list.length; i++){
+            arr.push(list[i].id);
+          }
+          arr.push($(this).html())
+          console.log(arr)
+          var obj = $("#actions-form").serializeObject();
+          var token = obj.csrfmiddlewaretoken
+          $.get(window.location.href, {new_array:JSON.stringify({"arr":arr}),csrfmiddlewaretoken:token}, 'html')
+      });
+      $("#add-action").on('click', function() {
+        $('#menu').toggle();
+        $("#add-action").toggleClass('rotate');
+      });
+  });

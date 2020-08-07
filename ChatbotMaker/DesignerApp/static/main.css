@@ -11,3 +11,25 @@ html {
 #endpoint{
   color: red;
 }
+.inline-form{
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+#add-action{
+    font-size: 2rem;
+    transition: transform 0.5s;
+}
+#add-action-menu{
+  margin-left: 90vw;
+}
+#new-action{
+  background-color:  #f2f2f2;
+  cursor: cell;
+}
+#new-action:hover{
+  background-color: #cccccc;
+}
+.rotate {
+    transform: rotate(90deg);
+    transition: transform 0.5s;
+}

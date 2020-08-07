@@ -7,6 +7,8 @@ from .forms import *
 from collections import OrderedDict
 from .node import Node
 from .form_functions import *
+import json
+import traceback
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
 
@@ -87,8 +89,10 @@ def get_task(request, assistant_sid, task_sid):
     return render(request, 'task.html', {'assistant':assistant, 'task':task})
 
 def edit_actions(request, assistant_sid, task_sid):
-    test = '<h1>BOLD</h1>'
-    # organized_dict = OrderedDict()
+    error = ''
+    form_elements = ""
+    counter = 0
+    order = OrderedDict()
     assistant = Assistant.objects.get(sid=assistant_sid)
     task = client.autopilot \
         .assistants(assistant.sid) \
@@ -100,62 +104,77 @@ def edit_actions(request, assistant_sid, task_sid):
     except TwilioRestException:
         print("Yikes Dawg")
     options = {
-        "say":"""<div class='inline-form'>
-    <legend>Say</legend>
-    <label for='speech'>Text</label>
-    <input required id="speech" type="text" name='actions[][say][speech]' placeholder='Hello!'/>
-  </div>""",
-        "play":"""<div class='inline-form'>
-    <legend>Play</legend>
-    <label for='loop'>Loop</label>
-    <input type="number" id="loop" name='actions[][play][loop]' placeholder='3'/>
-    <label for='url'>URL</label>
-    <input required id="url" type="url" name='actions[][play][url]' placeholder='https://www.mysite.com/song.mp3'/>
-  </div>""",
-        "listen":"""<div class='inline-form'>
-    <legend>Listen</legend>
-    <label for="tasks">Tasks</label>
-    <input type="text" id="tasks" name='actions[][listen][tasks][]' placeholder='task-1'/>
-  </div>""",
+        "say":"<div id='say' class='inline-form'>\
+    <legend>Say</legend><button id='action'>-</button>\
+    <label for='speech'>Text</label>\
+    <input required id='speech' type='text' name='actions[{order}][say][speech]' placeholder='Hello!'/>\
+  </div>",
+        "play":"<div id='play' class='inline-form'>\
+    <legend>Play</legend><button id='action'>-</button>\
+    <label for='loop'>Loop</label>\
+    <input type='number' id='loop' name='actions[{order}][play][loop]' placeholder='3'/>\
+    <label for='url'>URL</label>\
+    <input required id='url' type='url' name='actions[{order}][play][url]' placeholder='https://www.mysite.com/song.mp3'/>\
+  </div>",
+        "listen":"<div id='listen' class='inline-form'>\
+    <legend>Listen</legend><button id='action'>-</button>\
+    <label for='tasks'>Tasks</label><button id='add-listen'>+</button>\
+    <input type='text' id='tasks' name='actions[{order}][listen][tasks][]' placeholder='task-1'/>\
+  </div>",
         "collect":"""<h1>BOLD</h1>""",
-        "handoff":"""<div class='inline-form'>
-    <legend>Handoff</legend>
-    <label for="chanel">Chanel</label>
-    <select required id="chanel" name="actions[][handoff][chanel]"><option>voice</option></select>
-    <label for="uri">TwiML URI</label>
-    <input required id="uri" type="url" name='actions[][handoff][uri]' placeholder='TwiML URI'/>
-    <label for="method">Method</label>
-    <select id="method" name="actions[][handoff][method]"><option>GET</option><option>POST</option></select>
-  </div>""",
-        "redirect":"""<div class='inline-form'>
-    <legend>Redirect</legend>
-    <!-- <label for="url">URL</label>
-    <input required id="url" type="url" name='actions[][redirect][url]' placeholder='https://www.mysite.com/my-redirect/'/>
-    <h3>OR</h3> -->
-    <label for="task">Task or URL</label>
-    <input required id="task" type="text" name='actions[][redirect]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>
-    <label for="method">Method</label>
-    <select id="method" name="actions[][redirect][method]"><option>GET</option><option>POST</option></select>
-  </div>""",
+        "handoff":"<div id='handoff' class='inline-form'>\
+    <legend>Handoff</legend><button id='action'>-</button>\
+    <label for='chanel'>Chanel</label>\
+    <select required id='chanel' name='actions[{order}][handoff][chanel]'><option>voice</option></select>\
+    <label for='uri'>TwiML URI</label>\
+    <input required id='uri' type='url' name='actions[{order}][handoff][uri]' placeholder='TwiML URI'/>\
+    <label for='method'>Method</label>\
+    <select id='method' name='actions[{order}][handoff][method]'><option>GET</option><option>POST</option></select>\
+  </div>",
+        "redirect":"<div id='redirect' class='inline-form'>\
+    <legend>Redirect</legend><button id='action'>-</button>\
+    <label for='task'>Task or URL</label>\
+    <input required id='task' type='text' name='actions[{order}][redirect][uri]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>\
+    <label for='method'>Method</label>\
+    <select id='method' name='actions[{order}][redirect][method]'><option>GET</option><option>POST</option></select>\
+  </div>",
         "show":"""<h1>BOLD</h1>""",
     }
-    form_elements = ""
-    for element in task_actions["actions"]:
-        form_elements += options[next(iter((element)))]
-    form_elements += "<input type='submit' value='Save'>"
-    print(form_elements)
     if request.method == 'POST':
-        print(request.POST)
-        # say(request, task_actions)
-        # for item in request.POST.keys():
-        #     if item.split("-")[0] in options.keys():
-        #         if item.split("-")[0] in organized_dict.keys():
-        #             organized_dict[item.split("-")[0]].append(request.POST.get(item))
-        #         else:
-        #             organized_dict[item.split("-")[0]] = {}
-        #             organized_dict[item.split("-")[0]].append(request.POST.get(item))
-        # print(organized_dict)
-    return render(request, 'edit.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task,})
+        print(request.POST.dict())
+        if('data' in request.POST.dict().keys()):
+            try:
+                task.task_actions.get().fetch().update(request.POST.dict()['data'])
+            except TwilioRestException:
+                traceback.print_exc()
+                error = "Bad Form"
+        if('new_array' in request.POST.dict().keys()):
+            withjson = request.POST.dict()['new_array']
+            pydict = json.loads(withjson)
+            arr = pydict['arr']
+            form_elements = ""
+            for element in arr:
+                order[element] = counter
+                counter += 1
+            for item in order:
+                options[item] = options[item].format(order=order[item])
+            for element in arr:
+                form_elements += options[element]
+            print(order)
+            print(counter)
+            print(arr)
+            print(form_elements)
+    else:
+        for element in task_actions["actions"]:
+            order[next(iter((element)))] = counter
+            counter += 1
+        for item in order:
+            options[item] = options[item].format(order=order[item])
+        for element in task_actions["actions"]:
+            form_elements += options[next(iter((element)))]
+
+        form_elements += ""
+    return render(request, 'edit.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task, 'error':error,})
 
 def tree(request, assistant_sid):
     first = "Task 1"
