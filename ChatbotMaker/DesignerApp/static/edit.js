@@ -16,13 +16,14 @@
 //   },
 //
 // }
+var bstring = ''
+var bobj = {}
+var barray = []
 function clean(obj, bstring, bobj, barray){
   var new_obj = obj;
   if (Array.isArray(new_obj)){
-    console.log("Parsing Array");
     for (atr in new_obj){
       if (new_obj[atr] == bstring){
-        console.log("Deleting String")
         delete new_obj[atr]
       }
       else {
@@ -31,37 +32,23 @@ function clean(obj, bstring, bobj, barray){
     }
   }
   else if (typeof new_obj == 'object'){
-    console.log("Parsing Object");
     for (atr in new_obj){
       if (new_obj[atr] == bstring){
-        console.log("Deleting String")
         delete new_obj[atr]
       }
       else {
         new_obj[atr] = clean(new_obj[atr], bstring, bobj, barray)
       }
-      if (JSON.stringify(new_obj[atr]) == JSON.stringify(bobj)){
-          console.log(delete new_obj[atr]);
-        }
     }
   }
   else{
-    console.log("not object or array")
-  }
-  try {
-    new_obj = new_obj.filter(function( element ) {
-          return element !== undefined;
-        });
-  }
-  catch(err) {
-
   }
   for(atr in new_obj){
     if (JSON.stringify(new_obj[atr]) == JSON.stringify(bobj)){
-          console.log(delete new_obj[atr]);
+          delete new_obj[atr];
         }
     try {
-      new_obj = new_obj.filter(function( element ) {
+      new_obj[atr] = new_obj[atr].filter(function( element ) {
             return element !== undefined;
           });
     }
@@ -69,15 +56,13 @@ function clean(obj, bstring, bobj, barray){
 
     }
     if (Array.isArray(new_obj[atr])){
-      if(JSON.stringify(new_obj[atr] == JSON.stringify(barray)))
+      if(JSON.stringify(new_obj[atr]) == JSON.stringify(barray)){
         console.log(delete new_obj[atr]);
+      }
     }
   }
-
   return new_obj;
 }
-
-
 function createJSON(){
   // var list = document.getElementsByTagName("fieldset");
   // var obj = {};
@@ -88,7 +73,11 @@ function createJSON(){
   // console.log(obj)
   var obj = $("#actions-form").serializeObject();
   delete obj.csrfmiddlewaretoken;
+  if(JSON.stringify(clean(obj["listen"], bstring, bobj, barray)) == JSON.stringify(bobj))
+  {
+    obj["listen"] = true;
+  }
+  obj = clean(obj, bstring, bobj, barray)
   console.log(obj);
-  var string = $("#actions-form").serializeJSON();
-  console.log(string);
+  console.log(JSON.stringify(obj));
 }

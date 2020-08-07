@@ -20,7 +20,7 @@
         <option value=redirect>redirect</option>
         <option value=remember>remember</option>
         <option value=show>show</option>
-      </select> -->
+      </select>
       <div class='inline-form'>
         <legend>Say</legend>
         <label for='speech'>Text</label>
@@ -49,14 +49,16 @@
       </div>
       <div class='inline-form'>
         <legend>Redirect</legend>
-        <!-- <label for="url">URL</label>
+        <label for="url">URL</label>
         <input required id="url" type="url" name='actions[][redirect][url]' placeholder='https://www.mysite.com/my-redirect/'/>
-        <h3>OR</h3> -->
+        <h3>OR</h3>
         <label for="task">Task or URL</label>
         <input required id="task" type="text" name='actions[][redirect]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>
         <label for="method">Method</label>
         <select id="method" name="actions[][redirect][method]"><option>GET</option><option>POST</option></select>
-      </div>
+      </div> -->
+      {{form_elements|safe}}
+    </form>
     <button onclick="javascript:createJSON()"></button>
     <div id="test">
       Test

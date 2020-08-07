@@ -101,47 +101,42 @@ def edit_actions(request, assistant_sid, task_sid):
         print("Yikes Dawg")
     options = {
         "say":"""<div class='inline-form'>
-        <legend>Say</legend>
-        <label for='saytext'>Text</label>
-        <input required type="text" name='saytext' placeholder='Hello!'/>
-      </div>""",
+    <legend>Say</legend>
+    <label for='speech'>Text</label>
+    <input required id="speech" type="text" name='actions[][say][speech]' placeholder='Hello!'/>
+  </div>""",
         "play":"""<div class='inline-form'>
-        <legend>Play</legend>
-        <label for='play-loop'>Loop</label>
-        <input required type="number" name='play-loop' placeholder='3'/>
-        <label for='play-url'>URL</label>
-        <input required type="url" name='play-url' placeholder='https://www.mysite.com/song.mp3'/>
-      </div>""",
+    <legend>Play</legend>
+    <label for='loop'>Loop</label>
+    <input type="number" id="loop" name='actions[][play][loop]' placeholder='3'/>
+    <label for='url'>URL</label>
+    <input required id="url" type="url" name='actions[][play][url]' placeholder='https://www.mysite.com/song.mp3'/>
+  </div>""",
         "listen":"""<div class='inline-form'>
-        <legend>Listen</legend>
-        <label for="listen-tasks">Tasks</label>
-        <input type="text" name='listen-tasks' placeholder='task-1, task-2, task-3'/>
-      </div>""",
+    <legend>Listen</legend>
+    <label for="tasks">Tasks</label>
+    <input type="text" id="tasks" name='actions[][listen][tasks][]' placeholder='task-1'/>
+  </div>""",
         "collect":"""<h1>BOLD</h1>""",
         "handoff":"""<div class='inline-form'>
-        <legend>Handoff</legend>
-        <label for="chanel">Chanel</label>
-        <select name="chanel"><option>voice</option></select>
-        <label for="uri">TwiML URI</label>
-        <input required type="url" name='uri' placeholder='TwiML URI'/>
-        <label for="method">Method</label>
-        <select name="method"><option>POST</option><option>GET</option></select>
-      </div>""",
+    <legend>Handoff</legend>
+    <label for="chanel">Chanel</label>
+    <select required id="chanel" name="actions[][handoff][chanel]"><option>voice</option></select>
+    <label for="uri">TwiML URI</label>
+    <input required id="uri" type="url" name='actions[][handoff][uri]' placeholder='TwiML URI'/>
+    <label for="method">Method</label>
+    <select id="method" name="actions[][handoff][method]"><option>GET</option><option>POST</option></select>
+  </div>""",
         "redirect":"""<div class='inline-form'>
-        <legend>Redirect</legend>
-        <label for="url">URL</label>
-        <input required type="url" name='url' placeholder='https://www.mysite.com/my-redirect/'/>
-        <label for="method">Method</label>
-        <select name="method"><option>POST</option><option>GET</option></select>
-        <h3>OR</h3>
-        <label for="task">Task</label>
-        <input required type="text" name='task' placeholder='task://my-task1'/>
-      </div>""",
-        "remember":"""<div class='inline-form'>
-        <legend>Remember</legend>
-        <label for="url">URL</label>
-        <input required type="url" name='url' placeholder='https://www.mysite.com/my-redirect/'/>
-      </div>""",
+    <legend>Redirect</legend>
+    <!-- <label for="url">URL</label>
+    <input required id="url" type="url" name='actions[][redirect][url]' placeholder='https://www.mysite.com/my-redirect/'/>
+    <h3>OR</h3> -->
+    <label for="task">Task or URL</label>
+    <input required id="task" type="text" name='actions[][redirect]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>
+    <label for="method">Method</label>
+    <select id="method" name="actions[][redirect][method]"><option>GET</option><option>POST</option></select>
+  </div>""",
         "show":"""<h1>BOLD</h1>""",
     }
     form_elements = ""
