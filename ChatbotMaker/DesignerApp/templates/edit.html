@@ -1,58 +1,66 @@
-{{test|safe}}
-{{form_elements|safe}}
-<hr />
-<form action='/assistants/{{assistant.sid}}/tasks/{{task.sid}}/edit' method='post' name='update'>
-  {% csrf_token %}
-  <label for='action'>action</label>
-  <select id='action' name='action'>
-    <option value=say>say</option>
-    <option value=play>play</option>
-    <option value=listen>listen</option>
-    <option value=collect>collect</option>
-    <option value=handoff>handoff</option>
-    <option value=redirect>redirect</option>
-    <option value=remember>remember</option>
-    <option value=show>show</option>
-  </select>
-  <div class='inline-form'>
-    <legend>Say</legend>
-    <label for='text'>Text</label>
-    <input required type="text" name='text' placeholder='Hello!'/>
-  </div>
-  <div class='inline-form'>
-    <legend>Play</legend>
-    <label for='loop'>Loop</label>
-    <input required type="number" name='loop' placeholder='3'/>
-    <label for='url'>URL</label>
-    <input required type="url" name='url' placeholder='https://www.mysite.com/song.mp3'/>
-  </div>
-  <div class='inline-form'>
-    <legend>Listen</legend>
-    <label for="tasks">Tasks</label>
-    <input type="text" name='tasks' placeholder='task-1, task-2, task-3'/>
-  </div>
-  <div class='inline-form'>
-    <legend>Handoff</legend>
-    <label for="chanel">Chanel</label>
-    <select name="chanel"><option>voice</option></select>
-    <label for="uri">TwiML URI</label>
-    <input required type="url" name='uri' placeholder='TwiML URI'/>
-    <label for="method">Method</label>
-    <select name="method"><option>POST</option><option>GET</option></select>
-  </div>
-  <div class='inline-form'>
-    <legend>Redirect</legend>
-    <label for="url">URL</label>
-    <input required type="url" name='url' placeholder='https://www.mysite.com/my-redirect/'/>
-    <label for="method">Method</label>
-    <select name="method"><option>POST</option><option>GET</option></select>
-    <h3>OR</h3>
-    <label for="task">Task</label>
-    <input required type="text" name='task' placeholder='task://my-task1'/>
-  </div>
-  <div class='inline-form'>
-    <legend>Remember</legend>
-    <label for="url">URL</label>
-    <input required type="url" name='url' placeholder='https://www.mysite.com/my-redirect/'/>
-  </div>
-</form>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    {% load static %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'jquery.serialize-object.min.js' %}"></script>
+  </head>
+  <body>
+    <form id="actions-form" action='/assistants/{{assistant.sid}}/tasks/{{task.sid}}/edit/' method='POST' name='update'>
+      {% csrf_token %}
+      <!-- <label for='action'>action</label>
+      <select id='action' name='action'>
+        <option value=say>say</option>
+        <option value=play>play</option>
+        <option value=listen>listen</option>
+        <option value=collect>collect</option>
+        <option value=handoff>handoff</option>
+        <option value=redirect>redirect</option>
+        <option value=remember>remember</option>
+        <option value=show>show</option>
+      </select> -->
+      <div class='inline-form'>
+        <legend>Say</legend>
+        <label for='speech'>Text</label>
+        <input required id="speech" type="text" name='actions[][say][speech]' placeholder='Hello!'/>
+      </div>
+      <div class='inline-form'>
+        <legend>Play</legend>
+        <label for='loop'>Loop</label>
+        <input type="number" id="loop" name='actions[][play][loop]' placeholder='3'/>
+        <label for='url'>URL</label>
+        <input required id="url" type="url" name='actions[][play][url]' placeholder='https://www.mysite.com/song.mp3'/>
+      </div>
+      <div class='inline-form'>
+        <legend>Listen</legend>
+        <label for="tasks">Tasks</label>
+        <input type="text" id="tasks" name='actions[][listen][tasks][]' placeholder='task-1'/>
+      </div>
+      <div class='inline-form'>
+        <legend>Handoff</legend>
+        <label for="chanel">Chanel</label>
+        <select required id="chanel" name="actions[][handoff][chanel]"><option>voice</option></select>
+        <label for="uri">TwiML URI</label>
+        <input required id="uri" type="url" name='actions[][handoff][uri]' placeholder='TwiML URI'/>
+        <label for="method">Method</label>
+        <select id="method" name="actions[][handoff][method]"><option>GET</option><option>POST</option></select>
+      </div>
+      <div class='inline-form'>
+        <legend>Redirect</legend>
+        <!-- <label for="url">URL</label>
+        <input required id="url" type="url" name='actions[][redirect][url]' placeholder='https://www.mysite.com/my-redirect/'/>
+        <h3>OR</h3> -->
+        <label for="task">Task or URL</label>
+        <input required id="task" type="text" name='actions[][redirect]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>
+        <label for="method">Method</label>
+        <select id="method" name="actions[][redirect][method]"><option>GET</option><option>POST</option></select>
+      </div>
+    <button onclick="javascript:createJSON()"></button>
+    <div id="test">
+      Test
+    </div>
+  </body>
+  <script src="{% static 'edit.js' %}"></script>
+</html>

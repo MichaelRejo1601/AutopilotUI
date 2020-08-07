@@ -6,6 +6,7 @@ from .models import *
 from .forms import *
 from collections import OrderedDict
 from .node import Node
+from .form_functions import *
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
 
@@ -87,8 +88,13 @@ def get_task(request, assistant_sid, task_sid):
 
 def edit_actions(request, assistant_sid, task_sid):
     test = '<h1>BOLD</h1>'
+    # organized_dict = OrderedDict()
+    assistant = Assistant.objects.get(sid=assistant_sid)
+    task = client.autopilot \
+        .assistants(assistant.sid) \
+        .tasks(task_sid).fetch()
     try:
-        task = client.autopilot \
+        task_actions = client.autopilot \
         .assistants(assistant_sid) \
         .tasks(task_sid).task_actions.get().fetch().data
     except TwilioRestException:
@@ -96,20 +102,20 @@ def edit_actions(request, assistant_sid, task_sid):
     options = {
         "say":"""<div class='inline-form'>
         <legend>Say</legend>
-        <label for='text'>Text</label>
-        <input required type="text" name='text' placeholder='Hello!'/>
+        <label for='saytext'>Text</label>
+        <input required type="text" name='saytext' placeholder='Hello!'/>
       </div>""",
         "play":"""<div class='inline-form'>
         <legend>Play</legend>
-        <label for='loop'>Loop</label>
-        <input required type="number" name='loop' placeholder='3'/>
-        <label for='url'>URL</label>
-        <input required type="url" name='url' placeholder='https://www.mysite.com/song.mp3'/>
+        <label for='play-loop'>Loop</label>
+        <input required type="number" name='play-loop' placeholder='3'/>
+        <label for='play-url'>URL</label>
+        <input required type="url" name='play-url' placeholder='https://www.mysite.com/song.mp3'/>
       </div>""",
         "listen":"""<div class='inline-form'>
         <legend>Listen</legend>
-        <label for="tasks">Tasks</label>
-        <input type="text" name='tasks' placeholder='task-1, task-2, task-3'/>
+        <label for="listen-tasks">Tasks</label>
+        <input type="text" name='listen-tasks' placeholder='task-1, task-2, task-3'/>
       </div>""",
         "collect":"""<h1>BOLD</h1>""",
         "handoff":"""<div class='inline-form'>
@@ -139,10 +145,22 @@ def edit_actions(request, assistant_sid, task_sid):
         "show":"""<h1>BOLD</h1>""",
     }
     form_elements = ""
-    for element in task["actions"]:
+    for element in task_actions["actions"]:
         form_elements += options[next(iter((element)))]
+    form_elements += "<input type='submit' value='Save'>"
     print(form_elements)
-    return render(request, 'edit.html', {'test':test, "form_elements":form_elements,})
+    if request.method == 'POST':
+        print(request.POST)
+        # say(request, task_actions)
+        # for item in request.POST.keys():
+        #     if item.split("-")[0] in options.keys():
+        #         if item.split("-")[0] in organized_dict.keys():
+        #             organized_dict[item.split("-")[0]].append(request.POST.get(item))
+        #         else:
+        #             organized_dict[item.split("-")[0]] = {}
+        #             organized_dict[item.split("-")[0]].append(request.POST.get(item))
+        # print(organized_dict)
+    return render(request, 'edit.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task,})
 
 def tree(request, assistant_sid):
     first = "Task 1"
