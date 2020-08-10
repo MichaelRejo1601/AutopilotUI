@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 from .config import *
@@ -89,7 +91,7 @@ def get_task(request, assistant_sid, task_sid):
     return render(request, 'task.html', {'assistant':assistant, 'task':task})
 
 def edit_actions(request, assistant_sid, task_sid):
-    error = ''
+    my_err = 'Valid Actions'
     form_elements = ""
     counter = 0
     order = OrderedDict()
@@ -118,7 +120,7 @@ def edit_actions(request, assistant_sid, task_sid):
   </div>",
         "listen":"<div id='listen' class='inline-form'>\
     <legend>Listen</legend><button id='action'>-</button>\
-    <label for='tasks'>Tasks</label><button id='add-listen'>+</button>\
+    <label for='tasks'>Tasks</label><button id='add-listen' type='button'>+</button>\
     <input type='text' id='tasks' name='actions[{order}][listen][tasks][]' placeholder='task-1'/>\
   </div>",
         "collect":"""<h1>BOLD</h1>""",
@@ -146,8 +148,8 @@ def edit_actions(request, assistant_sid, task_sid):
             try:
                 task.task_actions.get().fetch().update(request.POST.dict()['data'])
             except TwilioRestException:
+                my_err = "Invalid Actions, Please Input a Valid Set of Actions"
                 traceback.print_exc()
-                error = "Bad Form"
         if('new_array' in request.POST.dict().keys()):
             withjson = request.POST.dict()['new_array']
             pydict = json.loads(withjson)
@@ -160,10 +162,6 @@ def edit_actions(request, assistant_sid, task_sid):
                 options[item] = options[item].format(order=order[item])
             for element in arr:
                 form_elements += options[element]
-            print(order)
-            print(counter)
-            print(arr)
-            print(form_elements)
     else:
         for element in task_actions["actions"]:
             order[next(iter((element)))] = counter
@@ -174,7 +172,10 @@ def edit_actions(request, assistant_sid, task_sid):
             form_elements += options[next(iter((element)))]
 
         form_elements += ""
-    return render(request, 'edit.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task, 'error':error,})
+    print(order)
+    print(counter)
+    print(form_elements)
+    return render(request, 'edit.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task, 'my_err':my_err,})
 
 def tree(request, assistant_sid):
     first = "Task 1"

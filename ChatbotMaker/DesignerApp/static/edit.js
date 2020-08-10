@@ -16,6 +16,9 @@
 //   },
 //
 // }
+var arr = [];
+var listen_index;
+
 var bstring = ''
 var bobj = {}
 var barray = []
@@ -63,6 +66,21 @@ function clean(obj, bstring, bobj, barray){
   }
   return new_obj;
 }
+function updateArr(obj){
+  arr = [];
+  var list = document.getElementsByClassName('inline-form');
+  for (i = 0; i < list.length; i++){
+    arr.push(list[i].id);
+  }
+  if(arr.includes('listen')){
+    listen_index = document.getElementById("tasks").name.match(/(\d+)/)[0]
+    console.log(listen_index)
+    if(JSON.stringify(clean(obj["actions"][listen_index]["listen"], bstring, bobj, barray)) == JSON.stringify(bobj)){
+      obj["actions"][arr.indexOf('listen')]["listen"] = true;
+    }
+  }
+  return obj
+}
 function createJSON(){
   // var list = document.getElementsByTagName("fieldset");
   // var obj = {};
@@ -72,28 +90,23 @@ function createJSON(){
   // for (input in list[0].innerHTML.getElementsByTagName("input"))
   // console.log(obj)
   var obj = $("#actions-form").serializeObject();
-  var token = obj.csrfmiddlewaretoken
-  delete obj.csrfmiddlewaretoken
-  if(JSON.stringify(clean(obj["actions"][document.getElementById("tasks").name.match(/(\d+)/)[0]]["listen"], bstring, bobj, barray)) == JSON.stringify(bobj)){
-    obj["actions"][1]["listen"] = true;
-  }
+  var token = obj.csrfmiddlewaretoken;
+  delete obj.csrfmiddlewaretoken;
+  obj = updateArr(obj);
+  console.log(obj)
   obj = clean(obj, bstring, bobj, barray);
   console.log(obj);
-  $.post(window.location.href, {data:JSON.stringify(obj),csrfmiddlewaretoken:token})
+  $.post(window.location.href, {new_array:JSON.stringify({"arr":arr}),data:JSON.stringify(obj),csrfmiddlewaretoken:token}, function (data) {
+      window.location.reload()
+  }, "html")
 }
-function callBack(data) {
-      // If the $.post was successful
-      success: function suc(data) {
-          // do stuff
-          console.log(data); // returned from your endpoint
-      }
-}
+
 $('#menu').toggle(false);
 $(document).ready(function(){
-      $("#add-listen").click(function(){
-          $("#listen").append("<input type='text' id='tasks' name='actions["+ document.getElementById("tasks").name.match(/(\d+)/)[0] +"][listen][tasks][]' placeholder='task-x'/>");
+      $(document).on("click", "#add-listen", function(){
+          $("#listen").append("<input type='text' id='tasks' name='actions["+ listen_index +"][listen][tasks][]' placeholder='task-x'/>");
       });
-      $(document).on("click", "#tasks" , function() {
+      $(document).on("dblclick", "#tasks" , function() {
           $(this).remove();
       });
       $(document).on("click", "#action" , function() {
@@ -102,17 +115,22 @@ $(document).ready(function(){
       $(document).on("click", "#new-action" , function() {
           $('#menu').toggle();
           $("#add-action").toggleClass('rotate');
-          var arr = [];
-          var list = document.getElementsByClassName('inline-form');
-          for (i = 0; i < list.length; i++){
-            arr.push(list[i].id);
-          }
+          var obj = $("#actions-form").serializeObject();
+          obj = updateArr(obj);
           arr.push($(this).html())
           console.log(arr)
-          var obj = $("#actions-form").serializeObject();
-          var token = obj.csrfmiddlewaretoken
-          $.get(window.location.href, {new_array:JSON.stringify({"arr":arr}),csrfmiddlewaretoken:token}, 'html')
-      });
+          var token = obj.csrfmiddlewaretoken;
+          var datos = {new_array:JSON.stringify({"arr":arr}),csrfmiddlewaretoken:token}
+          $.ajax({
+            url: window.location.href,
+            type: "POST",
+            dataType: "html",
+            data: datos,
+            success: function (data) {
+                $("html").html(data);
+            }
+          });
+        });
       $("#add-action").on('click', function() {
         $('#menu').toggle();
         $("#add-action").toggleClass('rotate');

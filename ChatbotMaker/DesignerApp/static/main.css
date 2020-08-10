@@ -33,3 +33,6 @@ html {
     transform: rotate(90deg);
     transition: transform 0.5s;
 }
+.border-left-primary {
+  border-left: 0.25rem solid #4e73df !important;
+}
