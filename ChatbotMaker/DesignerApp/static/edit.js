@@ -109,6 +109,12 @@ $(document).ready(function(){
       $(document).on("dblclick", "#tasks" , function() {
           $(this).remove();
       });
+      $(document).on("hover", "#arrow-up", function(){
+          console.log("Test1");
+      });
+      $(document).on("hover", "#arrow-down", function(){
+          console.log("Test2");
+      });
       $(document).on("click", "#action" , function() {
           $(this).parent().remove();
       });

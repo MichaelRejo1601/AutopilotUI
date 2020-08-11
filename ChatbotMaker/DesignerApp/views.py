@@ -107,6 +107,12 @@ def edit_actions(request, assistant_sid, task_sid):
     except TwilioRestException:
         print("Yikes Dawg")
     options = {
+        "say":"<section id='say' class='panel'> <header class='panel-heading'> <a id='arrow-up' class='arrow'>&#8679;</a> <a id='arrow-down' class='arrow'>&#8681;</a> <strong style='font-size: 2rem;'>Say</strong> </header><div class='panel-body'><form class='form-horizontal' method='post'><div class='form-group'> <label class='col-sm-2 control-label'>Text</label><div class='col-sm-10'> <input required name='actions[0][say][speech]' type='text' class='form-control' placeholder='Hello there! How may I help you?'></div></div></form></div> </section>",
+        "play":"<section id='play' class='panel'> <header class='panel-heading'> <a id='arrow-up' class='arrow'>&#8679;</a> <a id='arrow-down' class='arrow'>&#8681;</a> <strong style='font-size: 2rem;'>Play</strong> </header><div class='panel-body'><form class='form-horizontal ' method='post'><div class='form-group'> <label class='col-sm-2 control-label'>URL</label><div class='col-sm-10'> <input required name='actions[1][play][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'></div></div><div class='form-group'> <label class='col-sm-2 control-label'>Loop</label><div class='col-sm-10'> <input required name='actions[1][play][loop]' type='number' class='form-control' placeholder='1'></div></div></form></div> </section>",
+        "listen":"<section id='listen' class='panel'> <header class='panel-heading'> <a id='arrow-up' class='arrow'>&#8679;</a> <a id='arrow-down' class='arrow'>&#8681;</a> <strong style='font-size: 2rem;'>Listen</strong> </header><div class='panel-body'><form class='form-horizontal ' method='post'><div class='form-group'> <label class='col-sm-2 control-label'>Tasks</label><div class='col-sm-10'> <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='Task-1'></div><div class='col-sm-2'></div><div class='col-sm-10'> <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='mytask-x'></div></div></form></div> </section>",
+
+    }
+    options1 = {
         "say":"<div id='say' class='inline-form'>\
     <legend>Say</legend><button id='action'>-</button>\
     <label for='speech'>Text</label>\
