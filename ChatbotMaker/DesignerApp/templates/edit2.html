@@ -1,12 +1,218 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-  </head>
-  <body>
-    
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="img/favicon.png">
+  {% load static %}
+  <title>ChatBot Maker</title>
+
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
+  <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-theme.css'%}" rel="stylesheet">
+  <link href="{% static 'css/elegant-icons-style.css'%}" rel="stylesheet" />
+  <link href="{% static 'css/font-awesome.min.css'%}" rel="stylesheet" />
+  <link href="{% static 'css/style.css'%}" rel="stylesheet">
+  <link href="{% static 'css/style-responsive.css'%}" rel="stylesheet" />
+  <link href="{% static 'main.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+
+  <section id="container" class="">
+
+    <header class="header dark-bg">
+
+
+      <a href="index.html" class="logo">Chatbot <span class="lite">Maker</span></a>
+
+    </header>
+
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+
+        <ul class="sidebar-menu">
+          <li>
+            <a class="" href="chart-chartjs.html">
+                          <span><strong>Assistant Name</strong></span>
+
+                      </a>
+
+          </li>
+          <li class="active">
+            <a class="" href="index.html">
+
+                          <span>Tasks</span>
+                      </a>
+          </li>
+          <li>
+            <a class="" href="chart-chartjs.html">
+
+                          <span>Dialouge Tree</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class="" href="chart-chartjs.html">
+
+                          <span>Fields</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class="" href="widgets.html">
+
+                          <span>Simulator</span>
+                      </a>
+          </li>
+          <li>
+            <a class="" href="chart-chartjs.html">
+
+                          <span>Config</span>
+
+                      </a>
+
+          </li>
+
+
+      </div>
+    </aside>
+
+    <section id="main-content">
+      <section class="wrapper">
+        <div class="row">
+          <div class="col-lg-12">
+            <h3 class="page-header">Edit Task Actions</h3>
+            <ol class="breadcrumb">
+              <li><a href="index.html">Dashboard</a></li>
+              <li>Assistant Name</li>
+              <li>Task Name</li>
+              <li>Edit</li>
+            </ol>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <section class="panel">
+              <header class="panel-heading">
+                  <a id="arrow-up" class="arrow">&#8679;</a>
+                  <a id="arrow-down" class="arrow">&#8681;</a>
+                  <strong style="font-size: 2rem;">Say</strong>
+              </header>
+              <div class="panel-body">
+                <form class="form-horizontal" method="post">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Text</label>
+                    <div class="col-sm-10">
+                      <input required name="actions[0][say][speech]" type="text" class="form-control" placeholder="Hello there! How may I help you?">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <section class="panel">
+              <header class="panel-heading">
+                <a id="arrow-up" class="arrow">&#8679;</a>
+                <a id="arrow-down" class="arrow">&#8681;</a>
+                <strong style="font-size: 2rem;">Play</strong>
+              </header>
+              <div class="panel-body">
+                <form class="form-horizontal " method="post">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">URL</label>
+                    <div class="col-sm-10">
+                      <input required name="actions[1][play][url]" type="url" class="form-control" placeholder="https://wwww.mysite.com/song.mp3">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Loop</label>
+                    <div class="col-sm-10">
+                      <input required name="actions[1][play][loop]" type="number" class="form-control" placeholder="1">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <section class="panel">
+              <header class="panel-heading">
+                <a id="arrow-up" class="arrow">&#8679;</a>
+                <a id="arrow-down" class="arrow">&#8681;</a>
+                <strong style="font-size: 2rem;">Listen</strong>
+              </header>
+              <div class="panel-body">
+                <form class="form-horizontal " method="post">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Tasks</label>
+                    <div class="col-sm-10">
+                      <input name="actions[2][listen][tasks][]" type="text" class="form-control" placeholder="Task-1">
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-10">
+                      <input name="actions[2][listen][tasks][]" type="text" class="form-control" placeholder="mytask-x">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <section class="panel">
+              <header class="panel-heading">
+                <strong>Form Elements</strong>
+              </header>
+              <div class="panel-body">
+                <form class="form-horizontal " method="get">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Default</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Help text</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control">
+                      <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Rounder</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control round-input">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Input focus</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" id="focusedInput" type="text" value="This is focused...">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Disabled</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Placeholder</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" placeholder="placeholder">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+        </div>
+</body>
+<button onclick='javascript:createJSON()'>Save</button>
+<script src='{% static 'edit2.js' %}'></script>
 </html>

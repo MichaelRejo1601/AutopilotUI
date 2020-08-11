@@ -11,6 +11,7 @@ from .node import Node
 from .form_functions import *
 import json
 import traceback
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
 
@@ -89,7 +90,7 @@ def get_task(request, assistant_sid, task_sid):
         except TwilioRestException:
             print("Yikes Dawg")
     return render(request, 'task.html', {'assistant':assistant, 'task':task})
-
+@csrf_exempt
 def edit_actions(request, assistant_sid, task_sid):
     my_err = 'Valid Actions'
     form_elements = ""
@@ -175,7 +176,7 @@ def edit_actions(request, assistant_sid, task_sid):
     print(order)
     print(counter)
     print(form_elements)
-    return render(request, 'edit.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task, 'my_err':my_err,})
+    return render(request, 'edit2.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task, 'my_err':my_err,})
 
 def tree(request, assistant_sid):
     first = "Task 1"
