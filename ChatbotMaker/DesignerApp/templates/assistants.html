@@ -1,7 +1,75 @@
-<h1>[ASSISTANTS_CHANGE_NAME]: </h1>
-{% for assistant in assistants %}
-<div>
-  <h2><a href='/assistants/{{assistant.sid}}/'>{{assistant.unique_name}}</a></h2>
-  <h6>{{assistant.sid}}</h6>
-</div>
-{% endfor %}
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link rel='shortcut icon' href='img/favicon.png'>
+  {% load static %}
+  <title>ChatBot Maker</title>
+
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
+  <link href='{% static 'css/bootstrap.min.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/bootstrap-theme.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/elegant-icons-style.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/font-awesome.min.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/style.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/style-responsive.css'%}' rel='stylesheet' />
+  <link href='{% static 'main.css' %}' rel='stylesheet' />
+  <style>
+    .hover-card {
+      margin-bottom: 15px;
+      padding:0;
+      transition: box-shadow 0.3s;
+    }
+    .hover-card:hover{
+      box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.75);
+    }
+  </style>
+</head>
+
+<body>
+
+  <section id='container' class=''>
+
+    <header class='header dark-bg'>
+
+
+      <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+
+    </header>
+
+    <section id='main-content' style="margin-left:5%; margin-right:5%;">
+      <section class='wrapper'>
+        <div class='row'>
+          <div class='col-lg-10'>
+            <h2 class='page-header'>Dashboard</h2>
+          </div>
+          <div class='col-lg-2'>
+              <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; margin-top:10px; margin-bottom:10px;"><strong>+</strong></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <ol class='breadcrumb'>
+              <li><a href='{% url 'get_assistants' %}'>Dashboard</a></li>
+            </ol>
+          </div>
+        </div>
+        <div class='row' style="padding-left:15px; padding-right:15px;">
+          {% for assistant in assistants %}
+          <div class="col-lg-12 hover-card">
+            <a href="{% url 'get_assistant' assistant.sid %}" class="panel" style="color:inherit;">
+              <header class="panel-heading">
+                <h3>{{assistant.unique_name}}</h3>
+              </header>
+              <div class="panel-body">
+                SID: {{assistant.sid}}
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+</body>
+</html>

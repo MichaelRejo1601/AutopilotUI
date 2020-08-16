@@ -1,27 +1,132 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-  </head>
-  <body>
-    <h1>[Task] Tree</h1>
-    {% for node in pc_list %}
-      <div class="node">
-        <ul>
-          <li class="parent" id="{{node.value}}parent"><a href="#{{node.value}}parent" onclick="findParent('{{node.value}}')">{{node.value}}</a></li>
-          <ul>
-          {% for child in node.children %}
-            <li class="child" id="{{child}}child"><a href="#{{child}}parent" onclick="findParent('{{child}}')">{{child}}</a></li>
-          {% endfor %}
-          </ul>
-        </ul>
-      </div>
-    {% endfor %}
+<html lang='en'>
 
-    {{pc_list.children}}
-  </body>
-  <script src="{% static 'tree.js' %}"></script>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link rel='shortcut icon' href='img/favicon.png'>
+  {% load static %}
+  <title>ChatBot Maker</title>
+
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
+  <link href='{% static 'css/bootstrap.min.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/bootstrap-theme.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/elegant-icons-style.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/font-awesome.min.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/style.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/style-responsive.css'%}' rel='stylesheet' />
+  <link href='{% static 'main.css' %}' rel='stylesheet' />
+  <style>
+    .hover-card {
+      margin-bottom: 15px;
+      padding:0;
+      transition: box-shadow 0.3s;
+    }
+    .hover-card:hover{
+      box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.75);
+    }
+  </style>
+</head>
+
+<body>
+
+  <section id='container' class=''>
+
+    <header class='header dark-bg'>
+
+
+      <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+
+    </header>
+
+    <aside>
+      <div id='sidebar' class='nav-collapse '>
+
+        <ul class='sidebar-menu'>
+          <li>
+            <a class='' href='{% url 'get_assistant' assistant.sid %}'>
+                          <span><strong>{{assistant.unique_name}}</strong></span>
+
+                      </a>
+
+          </li>
+          <li class=''>
+            <a class='' href='{% url 'get_tasks' assistant.sid %}'>
+
+                          <span>Tasks</span>
+                      </a>
+          </li>
+          <li class='active'>
+            <a class='active' href='{% url 'tree' assistant.sid %}'>
+
+                          <span>Dialouge Tree</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class='' href='{% url 'fields' assistant.sid %}'>
+
+                          <span>Fields</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class='' href='{% url 'simulator' assistant.sid %}'>
+
+                          <span>Simulator</span>
+                      </a>
+          </li>
+          <li>
+            <a class='' href='{% url 'config' assistant.sid %}'>
+
+                          <span>Config</span>
+
+                      </a>
+
+          </li>
+
+
+      </div>
+    </aside>
+
+    <section id='main-content'>
+      <section class='wrapper'>
+        <div class='row'>
+          <div class='col-lg-10'>
+            <h2 class='page-header'>Dialouge Tree</h2>
+          </div>
+          <div class='col-lg-2'>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <ol class='breadcrumb'>
+              <li><a href='{% url 'get_assistants' %}'>Dashboard</a></li>
+              <li><a href='{% url 'get_assistant' assistant.sid %}'>{{assistant.unique_name}}</a></li>
+              <li><a href='{% url 'tree' assistant.sid %}'>Tree</a></li>
+            </ol>
+          </div>
+        </div>
+        <div class='row' style="padding-left:15px; padding-right:15px;">
+          {% for node in pc_list %}
+          <div class="col-lg-12 hover-card">
+            <a href="#" class="panel" style="color:inherit;">
+              <header class="panel-heading">
+                <h3 class="parent" id="{{node.value}}parent">{{node.value}}</h3>
+              </header>
+              <div class="panel-body">
+                <h4 style="margin-top:0;">Connections</h4>
+                {% for child in node.children %}
+                  <div class="col-lg-12 child" id="{{child}}child"><a href="#{{child}}parent" onclick="findParent('{{child}}')">- {{child}}</a></div>
+                {% endfor %}
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+</body>
+<script src="{% static 'tree.js' %}"></script>
 </html>

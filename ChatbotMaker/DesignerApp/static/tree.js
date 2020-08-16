@@ -18,13 +18,13 @@ function createEnd(item){
     item.children[0].style.color = "red";
   }
 }
-function findParent(child) {
-    var parent = document.getElementById(child+"parent");
-    var current = document.getElementById("indicator");
-    if (current != null){
-      current.removeAttribute("id");
-    }
-    if (parent != null){
-      parent.parentElement.parentElement.setAttribute('id','indicator');
-    }
-}
+// function findParent(child) {
+//     var parent = document.getElementById(child+"parent");
+//     var current = document.getElementById("indicator");
+//     if (current != null){
+//       current.removeAttribute("id");
+//     }
+//     if (parent != null){
+//       parent.parentElement.parentElement.setAttribute('id','indicator');
+//     }
+// }

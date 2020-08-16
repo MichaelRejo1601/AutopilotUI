@@ -26,7 +26,7 @@
     <header class='header dark-bg'>
 
 
-      <a href='index.html' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+      <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
 
     </header>
 
@@ -35,20 +35,20 @@
 
         <ul class='sidebar-menu'>
           <li>
-            <a class='' href='chart-chartjs.html'>
-                          <span><strong>Assistant Name</strong></span>
+            <a class='' href='{% url 'get_assistant' assistant.sid %}'>
+                          <span><strong>{{assistant.unique_name}}</strong></span>
 
                       </a>
 
           </li>
           <li class='active'>
-            <a class='' href='index.html'>
+            <a class='' href='{% url 'get_tasks' assistant.sid %}'>
 
                           <span>Tasks</span>
                       </a>
           </li>
           <li>
-            <a class='' href='chart-chartjs.html'>
+            <a class='' href='{% url 'tree' assistant.sid %}'>
 
                           <span>Dialouge Tree</span>
 
@@ -56,7 +56,7 @@
 
           </li>
           <li>
-            <a class='' href='chart-chartjs.html'>
+            <a class='' href='{% url 'fields' assistant.sid %}'>
 
                           <span>Fields</span>
 
@@ -64,13 +64,13 @@
 
           </li>
           <li>
-            <a class='' href='widgets.html'>
+            <a class='' href='{% url 'simulator' assistant.sid %}'>
 
                           <span>Simulator</span>
                       </a>
           </li>
           <li>
-            <a class='' href='chart-chartjs.html'>
+            <a class='' href='{% url 'config' assistant.sid %}'>
 
                           <span>Config</span>
 
@@ -85,13 +85,20 @@
     <section id='main-content'>
       <section class='wrapper'>
         <div class='row'>
-          <div class='col-lg-12'>
-            <h3 class='page-header'>Edit Task Actions</h3>
+          <div class='col-lg-10'>
+            <h2 class='page-header'>Edit Task Actions</h2>
+          </div>
+          <div class='col-lg-2'>
+              <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; margin-top:10px;"><strong>+</strong></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
             <ol class='breadcrumb'>
-              <li><a href='index.html'>Dashboard</a></li>
-              <li>Assistant Name</li>
-              <li>Task Name</li>
-              <li>Edit</li>
+              <li><a href='{% url 'get_assistants' %}'>Dashboard</a></li>
+              <li><a href='{% url 'get_assistant' assistant.sid %}'>{{assistant.unique_name}}</a></li>
+              <li><a href='{% url 'get_task' assistant.sid task.sid %}'>{{task.unique_name}}</a></li>
+              <li><a href='{% url 'edit_actions' assistant.sid task.sid %}'></a>Edit</li>
             </ol>
           </div>
         </div>
@@ -103,6 +110,7 @@
                   <a id='arrow-up' class='arrow'>&#8679;</a>
                   <a id='arrow-down' class='arrow'>&#8681;</a>
                   <strong style='font-size: 2rem;'>Say</strong>
+                  <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal' method='post'>
@@ -120,6 +128,7 @@
                 <a id='arrow-up' class='arrow'>&#8679;</a>
                 <a id='arrow-down' class='arrow'>&#8681;</a>
                 <strong style='font-size: 2rem;'>Play</strong>
+                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal ' method='post'>
@@ -143,78 +152,118 @@
                 <a id='arrow-up' class='arrow'>&#8679;</a>
                 <a id='arrow-down' class='arrow'>&#8681;</a>
                 <strong style='font-size: 2rem;'>Listen</strong>
+                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal ' method='post'>
                   <div class='form-group'>
                     <label class='col-sm-2 control-label'>Tasks</label>
-                    <div class='col-sm-10'>
+                    <div class='col-sm-9'>
                       <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='Task-1'>
                     </div>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                    </div>
                     <div class='col-sm-2'></div>
-                    <div class='col-sm-10'>
+                    <div class='col-sm-9'>
                       <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='mytask-x'>
                     </div>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                    </div>
+                    <div class='col-sm-2'></div>
+                    <div class='col-sm-9'>
+
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; margin-top:10px;"><strong>+</strong></button>
+                    </div>
                   </div>
                 </form>
               </div>
             </section>
-            {{form_elements|safe}}
-            <section class='panel'>
+            <section id='handoff' class='panel'>
               <header class='panel-heading'>
-                <strong>Form Elements</strong>
+                <a id='arrow-up' class='arrow'>&#8679;</a>
+                <a id='arrow-down' class='arrow'>&#8681;</a>
+                <strong style='font-size: 2rem;'>Handoff</strong>
+                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
               </header>
               <div class='panel-body'>
-                <form class='form-horizontal ' method='get'>
+                <form class='form-horizontal ' method='post'>
                   <div class='form-group'>
-                    <label class='col-sm-2 control-label'>Default</label>
-                    <div class='col-sm-10'>
-                      <input type='text' class='form-control'>
+                    <label class='col-sm-2 control-label'>Chanel</label>
+                    <div class='col-sm-9'>
+                      <select name='actions[1][handoff][chanel]' class="form-control m-bot15">
+                                              <option>Voice</option>
+                                              <option>Text</option>
+                                          </select>
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                   <div class='form-group'>
-                    <label class='col-sm-2 control-label'>Help text</label>
-                    <div class='col-sm-10'>
-                      <input type='text' class='form-control'>
-                      <span class='help-block'>A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                    <label class='col-sm-2 control-label'>TwiML URL</label>
+                    <div class='col-sm-9'>
+                      <input required name='actions[3][handoff][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'>
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                   <div class='form-group'>
-                    <label class='col-sm-2 control-label'>Rounder</label>
-                    <div class='col-sm-10'>
-                      <input type='text' class='form-control round-input'>
+                    <label class='col-sm-2 control-label'>Method</label>
+                    <div class='col-sm-9'>
+                      <select name='actions[1][handoff][methpd]' class="form-control m-bot15">
+                                              <option>GET</option>
+                                              <option>POST</option>
+                                          </select>
                     </div>
-                  </div>
-                  <div class='form-group'>
-                    <label class='col-sm-2 control-label'>Input focus</label>
-                    <div class='col-sm-10'>
-                      <input class='form-control' id='focusedInput' type='text' value='This is focused...'>
-                    </div>
-                  </div>
-                  <div class='form-group'>
-                    <label class='col-sm-2 control-label'>Disabled</label>
-                    <div class='col-sm-10'>
-                      <input class='form-control' id='disabledInput' type='text' placeholder='Disabled input here...' disabled>
-                    </div>
-                  </div>
-                  <div class='form-group'>
-                    <label class='col-sm-2 control-label'>Placeholder</label>
-                    <div class='col-sm-10'>
-                      <input type='text' class='form-control' placeholder='placeholder'>
-                    </div>
-                  </div>
-                  <div class='form-group'>
-                    <label class='col-sm-2 control-label'>Password</label>
-                    <div class='col-sm-10'>
-                      <input type='password' class='form-control' placeholder=''>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                 </form>
               </div>
             </section>
+            <section id='handoff' class='panel'>
+              <header class='panel-heading'>
+                <a id='arrow-up' class='arrow'>&#8679;</a>
+                <a id='arrow-down' class='arrow'>&#8681;</a>
+                <strong style='font-size: 2rem;'>Redirect</strong>
+                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+              </header>
+              <div class='panel-body'>
+                <form class='form-horizontal ' method='post'>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>URL</label>
+                    <div class='col-sm-9'>
+                      <input required name='actions[3][redirect][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'>
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                    </div>
+                  </div>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>Method</label>
+                    <div class='col-sm-9'>
+                      <select name='actions[1][redirect][method]' class="form-control m-bot15">
+                                              <option>GET</option>
+                                              <option>POST</option>
+                                          </select>
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <!-- {{form_elements|safe}} -->
           </div>
         </div>
 </body>
-<button onclick='javascript:createJSON()'>Save</button>
+<button onclick='javascript:createJSON()' class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;">Save</button>
 <script src='{% static 'edit2.js' %}'></script>
 </html>

@@ -42,7 +42,8 @@ def get_assistant(request, assistant_sid):
             print("Yikes Dawg but for Assistant")
     return render(request, 'assistant.html', {'assistant': assistant})
 def get_tasks(request, assistant_sid):
-    assistant = Assistant.objects.get(sid=assistant_sid)
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
     tasks = client.autopilot \
         .assistants(assistant.sid) \
         .tasks.list()
@@ -78,7 +79,8 @@ def get_tasks(request, assistant_sid):
     #     context = {'form':form, 'assistant':assistant}
     #     return render(request, "tasks.html", context)
 def get_task(request, assistant_sid, task_sid):
-    assistant = Assistant.objects.get(sid=assistant_sid)
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
     task = client.autopilot \
         .assistants(assistant.sid) \
         .tasks(task_sid).fetch()
@@ -96,7 +98,8 @@ def edit_actions(request, assistant_sid, task_sid):
     form_elements = ""
     counter = 0
     order = OrderedDict()
-    assistant = Assistant.objects.get(sid=assistant_sid)
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
     task = client.autopilot \
         .assistants(assistant.sid) \
         .tasks(task_sid).fetch()
@@ -106,13 +109,13 @@ def edit_actions(request, assistant_sid, task_sid):
         .tasks(task_sid).task_actions.get().fetch().data
     except TwilioRestException:
         print("Yikes Dawg")
-    options = {
+    options1 = {
         "say":"<section id='say' class='panel'> <header class='panel-heading'> <a id='arrow-up' class='arrow'>&#8679;</a> <a id='arrow-down' class='arrow'>&#8681;</a> <strong style='font-size: 2rem;'>Say</strong> </header><div class='panel-body'><form class='form-horizontal' method='post'><div class='form-group'> <label class='col-sm-2 control-label'>Text</label><div class='col-sm-10'> <input required name='actions[0][say][speech]' type='text' class='form-control' placeholder='Hello there! How may I help you?'></div></div></form></div> </section>",
         "play":"<section id='play' class='panel'> <header class='panel-heading'> <a id='arrow-up' class='arrow'>&#8679;</a> <a id='arrow-down' class='arrow'>&#8681;</a> <strong style='font-size: 2rem;'>Play</strong> </header><div class='panel-body'><form class='form-horizontal ' method='post'><div class='form-group'> <label class='col-sm-2 control-label'>URL</label><div class='col-sm-10'> <input required name='actions[1][play][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'></div></div><div class='form-group'> <label class='col-sm-2 control-label'>Loop</label><div class='col-sm-10'> <input required name='actions[1][play][loop]' type='number' class='form-control' placeholder='1'></div></div></form></div> </section>",
         "listen":"<section id='listen' class='panel'> <header class='panel-heading'> <a id='arrow-up' class='arrow'>&#8679;</a> <a id='arrow-down' class='arrow'>&#8681;</a> <strong style='font-size: 2rem;'>Listen</strong> </header><div class='panel-body'><form class='form-horizontal ' method='post'><div class='form-group'> <label class='col-sm-2 control-label'>Tasks</label><div class='col-sm-10'> <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='Task-1'></div><div class='col-sm-2'></div><div class='col-sm-10'> <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='mytask-x'></div></div></form></div> </section>",
 
     }
-    options1 = {
+    options = {
         "say":"<div id='say' class='inline-form'>\
     <legend>Say</legend><button id='action'>-</button>\
     <label for='speech'>Text</label>\
@@ -188,7 +191,8 @@ def tree(request, assistant_sid):
     first = "Task 1"
     dict = OrderedDict()
     node = Node(first)
-    assistant = Assistant.objects.get(sid=assistant_sid)
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
     tasks = client.autopilot \
         .assistants(assistant.sid) \
         .tasks.list()
@@ -206,3 +210,15 @@ def tree(request, assistant_sid):
     print(pc_list[0].children)
     context = {'assistant':assistant, 'pc_list':pc_list}
     return render(request, 'tree.html', context)
+
+def edit_samples():
+    pass
+
+def fields():
+    pass
+
+def simulator():
+    pass
+
+def config():
+    pass

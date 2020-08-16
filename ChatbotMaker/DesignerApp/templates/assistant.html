@@ -1,11 +1,107 @@
-<form action='/assistants/{{assistant.sid}}/' method='post' name='change_unique_name'>
-  {% csrf_token %}
-  <input type="text" name="unique_name" value="{{assistant.unique_name}}">
-</form>
-<h3>{{assistant.sid}}</h3>
+<!DOCTYPE html>
+<html lang='en'>
 
-<h4><a href='/assistants/{{assistant.sid}}/tasks/'>Tasks</a></h4>
-<h4><a href='/assistants/{{assistant.sid}}/config/'>Config</a></h4>
-<h4><a href='/assistants/{{assistant.sid}}/tree/'>Tree</a></h4>
-<h4><a href='/assistants/{{assistant.sid}}/simulator/'>Simulator</a></h4>
-<h4><a href='/assistants/{{assistant.sid}}/fields/'>Fields</a></h4>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link rel='shortcut icon' href='img/favicon.png'>
+  {% load static %}
+  <title>ChatBot Maker</title>
+
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
+  <link href='{% static 'css/bootstrap.min.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/bootstrap-theme.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/elegant-icons-style.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/font-awesome.min.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/style.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/style-responsive.css'%}' rel='stylesheet' />
+  <link href='{% static 'main.css' %}' rel='stylesheet' />
+</head>
+
+<body>
+
+  <section id='container' class=''>
+
+    <header class='header dark-bg'>
+
+
+      <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+
+    </header>
+
+    <aside>
+      <div id='sidebar' class='nav-collapse '>
+
+        <ul class='sidebar-menu'>
+          <li class="active">
+            <a class='' href='{% url 'get_assistant' assistant.sid %}'>
+                          <span><strong>{{assistant.unique_name}}</strong></span>
+
+                      </a>
+
+          </li>
+          <li class=''>
+            <a class='' href='{% url 'get_tasks' assistant.sid %}'>
+
+                          <span>Tasks</span>
+                      </a>
+          </li>
+          <li>
+            <a class='' href='{% url 'tree' assistant.sid %}'>
+
+                          <span>Dialouge Tree</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class='' href='{% url 'fields' assistant.sid %}'>
+
+                          <span>Fields</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class='' href='{% url 'simulator' assistant.sid %}'>
+
+                          <span>Simulator</span>
+                      </a>
+          </li>
+          <li>
+            <a class='' href='{% url 'config' assistant.sid %}'>
+
+                          <span>Config</span>
+
+                      </a>
+
+          </li>
+
+
+      </div>
+    </aside>
+
+    <section id='main-content'>
+      <section class='wrapper'>
+        <div class='row'>
+          <div class='col-lg-10'>
+            <h2 class='page-header'>{{assistant.unique_name}}</h2>
+          </div>
+          <div class='col-lg-2'>
+          </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <ol class='breadcrumb'>
+              <li><a href='{% url 'get_assistants' %}'>Dashboard</a></li>
+              <li><a href='{% url 'get_assistant' assistant.sid %}'>{{assistant.unique_name}}</a></li>
+            </ol>
+          </div>
+        </div>
+        <div class='row'>
+
+        </div>
+</body>
+</html>
