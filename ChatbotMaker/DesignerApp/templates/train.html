@@ -19,8 +19,7 @@
   <link href='{% static 'main.css' %}' rel='stylesheet' />
   <style>
     .hover-card {
-      margin-bottom: 15px;
-      padding:0;
+      box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
       transition: box-shadow 0.3s;
     }
     .hover-card:hover{
@@ -58,14 +57,14 @@
                       </a>
 
           </li>
-          <li class=''>
+          <li class='active'>
             <a class='' href='{% url 'get_tasks' assistant.sid %}'>
 
                           <span>Tasks</span>
                       </a>
           </li>
-          <li class='active'>
-            <a class='active' href='{% url 'tree' assistant.sid %}'>
+          <li>
+            <a class='' href='{% url 'tree' assistant.sid %}'>
 
                           <span>Dialouge Tree</span>
 
@@ -103,9 +102,10 @@
       <section class='wrapper'>
         <div class='row'>
           <div class='col-lg-10'>
-            <h2 class='page-header'>Dialouge Tree</h2>
+            <h2 class='page-header'>Train Task Recognition with Samples</h2>
           </div>
           <div class='col-lg-2'>
+              <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; margin-top:10px;"><strong>+</strong></button>
           </div>
         </div>
         <div class="row">
@@ -113,27 +113,12 @@
             <ol class='breadcrumb'>
               <li><a href='{% url 'get_assistants' %}'>Dashboard</a></li>
               <li><a href='{% url 'get_assistant' assistant.sid %}'>{{assistant.unique_name}}</a></li>
-              <li><a href='{% url 'tree' assistant.sid %}'>Tree</a></li>
+              <li><a href='{% url 'get_task' assistant.sid task.sid %}'>{{task.unique_name}}</a></li>
+              <li><a href='{% url 'edit_samples' assistant.sid task.sid %}'>Train</a></li>
             </ol>
           </div>
         </div>
-        <div class='row' style="padding-left:15px; padding-right:15px;">
-          {% for node in pc_list %}
-          <div class="col-lg-12 hover-card">
-            <a href="#" class="panel" style="color:inherit;">
-              <header class="panel-heading">
-                <h3 class="parent" id="{{node.value}}parent">{{node.value}}</h3>
-              </header>
-              <div class="panel-body">
-                <h4 style="margin-top:0;">Connections</h4>
-                {% for child in node.children %}
-                  <div class="col-lg-12 child" id="{{child}}child"><a href="#{{child}}parent" onclick="findParent('{{child}}')">- {{child}}</a></div>
-                {% endfor %}
-              </div>
-            </a>
-          </div>
-          {% endfor %}
+        <div class='row'>
         </div>
 </body>
-<script src="{% static 'tree.js' %}"></script>
 </html>

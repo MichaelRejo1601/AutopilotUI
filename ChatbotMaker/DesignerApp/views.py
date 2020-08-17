@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from twilio.rest import Client
@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_exempt,csrf_protect
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 # Create your views here.
+@csrf_exempt
 def test(request):
     assistant = Assistant.objects.latest('id')
     task = assistant.tasks.latest('id')
@@ -26,10 +27,12 @@ def test(request):
                    .tasks(str(task)).task_actions().fetch().data)
     context = {'test': test}
     return render(request, "test.html", context)
+@csrf_exempt
 def get_assistants(request):
     assistants = client.autopilot \
         .assistants.list()
     return render(request, 'assistants.html', {'assistants':assistants})
+@csrf_exempt
 def get_assistant(request, assistant_sid):
     assistant = client.autopilot \
         .assistants(assistant_sid).fetch()
@@ -41,6 +44,7 @@ def get_assistant(request, assistant_sid):
         except TwilioRestException:
             print("Yikes Dawg but for Assistant")
     return render(request, 'assistant.html', {'assistant': assistant})
+@csrf_exempt
 def get_tasks(request, assistant_sid):
     assistant = client.autopilot \
         .assistants(assistant_sid).fetch()
@@ -78,6 +82,7 @@ def get_tasks(request, assistant_sid):
     #
     #     context = {'form':form, 'assistant':assistant}
     #     return render(request, "tasks.html", context)
+@csrf_exempt
 def get_task(request, assistant_sid, task_sid):
     assistant = client.autopilot \
         .assistants(assistant_sid).fetch()
@@ -186,16 +191,13 @@ def edit_actions(request, assistant_sid, task_sid):
     print(counter)
     print(form_elements)
     return render(request, 'edit2.html', {'test':test, "form_elements":form_elements, 'assistant':assistant, 'task':task, 'my_err':my_err,})
-
+@csrf_exempt
 def tree(request, assistant_sid):
     first = "Task 1"
     dict = OrderedDict()
     node = Node(first)
     assistant = client.autopilot \
         .assistants(assistant_sid).fetch()
-    tasks = client.autopilot \
-        .assistants(assistant.sid) \
-        .tasks.list()
     for task in Relationship.objects.values('parent').distinct():
         print(task)
         dict[task["parent"]] = Node(task["parent"])
@@ -210,15 +212,62 @@ def tree(request, assistant_sid):
     print(pc_list[0].children)
     context = {'assistant':assistant, 'pc_list':pc_list}
     return render(request, 'tree.html', context)
-
-def edit_samples():
-    pass
-
-def fields():
-    pass
-
-def simulator():
-    pass
-
-def config():
-    pass
+@csrf_exempt
+def edit_samples(request, assistant_sid, task_sid):
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
+    task = client.autopilot \
+        .assistants(assistant_sid) \
+        .tasks(task_sid).fetch()
+    print("sid" + task.sid)
+    context = {'assistant':assistant, 'task':task}
+    return render(request, 'train.html', context)
+@csrf_exempt
+def fields(request, assistant_sid):
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
+    context = {'assistant':assistant}
+    return render(request, 'fields.html', context)
+@csrf_exempt
+def simulator(request, assistant_sid):
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
+    context = {'assistant':assistant}
+    return render(request, 'simulator.html', context)
+@csrf_exempt
+def config(request, assistant_sid):
+    assistant = client.autopilot \
+        .assistants(assistant_sid).fetch()
+    context = {'assistant':assistant}
+    return render(request, 'config.html', context)
+@csrf_exempt
+def login(request):
+    if request.method == "POST":
+        return HttpResponseRedirect('/assistants/')
+    return render(request, 'login.html', {})
+@csrf_exempt
+def create_assistant(request, unique_name):
+    assistant = client.autopilot \
+        .assistants.create(unique_name=unique_name)
+    print('createass')
+    return redirect(reverse('get_assistant', args=[assistant.sid]))
+@csrf_exempt
+def create_task(request, unique_name, assistant_sid):
+    task = client.autopilot \
+    .assistants(assistant_sid) \
+    .tasks.create(unique_name=unique_name)
+    print('createtask')
+    return redirect(reverse('get_task', args=[assistant_sid, task.sid]))
+@csrf_exempt
+def delete_assistant(request, unique_name):
+    assistant = client.autopilot \
+        .assistants(unique_name).delete()
+    print('delass')
+    return redirect(reverse('get_assistants'))
+@csrf_exempt
+def delete_task(request, unique_name, assistant_sid):
+    task = client.autopilot \
+    .assistants(assistant_sid) \
+    .tasks(unique_name).delete()
+    print('deltask')
+    return redirect(reverse('get_tasks', args=[assistant_sid]))

@@ -19,7 +19,7 @@ from DesignerApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),#Admin Site
     # path('test/', views.test, name='test'),#Test Site
-    # path('login/', views.login, name='login'),#Stale Login Page
+    path('', views.login, name='login'),#Stale Login Page
     path('assistants/', views.get_assistants, name='get_assistants'),#Gives a list of all assistants with details
     path('assistants/<str:assistant_sid>/', views.get_assistant, name='get_assistant'),#Useless
     path('assistants/<str:assistant_sid>/tasks/', views.get_tasks, name='get_tasks'),#Gives tasks page where you see details of all your tasks
@@ -31,5 +31,8 @@ urlpatterns = [
     path('assistants/<str:assistant_sid>/fields/', views.fields, name='fields'),
     path('assistants/<str:assistant_sid>/simulator/', views.simulator, name='simulator'),
     path('assistants/<str:assistant_sid>/config/', views.config, name='config'),
-    # path('assistants/<str:assistant>/tasks/create_task', views.create_task, name='create_task'),#Create a whole new task.
+    path('assistants/<str:assistant_sid>/tasks/create/<str:unique_name>/', views.create_task, name='create_task'),#Create a whole new task.
+    path('assistants/create/<str:unique_name>/', views.create_assistant, name='create_assistant'),
+    path('assistants/<str:assistant_sid>/tasks/delete/<str:unique_name>/', views.delete_task, name='delete_task'),#Create a whole new task.
+    path('assistants/delete/<str:unique_name>/', views.delete_assistant, name='delete_assistant'),
 ]

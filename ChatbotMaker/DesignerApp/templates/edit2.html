@@ -24,10 +24,17 @@
   <section id='container' class=''>
 
     <header class='header dark-bg'>
-
-
-      <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
-
+      <div class="row">
+        <div class="col-lg-10">
+          <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+        </div>
+        <div class="col-lg-1">
+          <a href='#settings' class="logo" style="color:#688a7e; font-size:2rem;">Settings</a>
+        </div>
+        <div class="col-lg-1">
+          <a href='{% url 'login' %}' class="logo" style="color:#688a7e; font-size:2rem;">Logout</a>
+        </div>
+      </div>
     </header>
 
     <aside>
@@ -110,7 +117,7 @@
                   <a id='arrow-up' class='arrow'>&#8679;</a>
                   <a id='arrow-down' class='arrow'>&#8681;</a>
                   <strong style='font-size: 2rem;'>Say</strong>
-                  <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                  <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;"><strong>remove</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal' method='post'>
@@ -128,7 +135,7 @@
                 <a id='arrow-up' class='arrow'>&#8679;</a>
                 <a id='arrow-down' class='arrow'>&#8681;</a>
                 <strong style='font-size: 2rem;'>Play</strong>
-                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;"><strong>remove</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal ' method='post'>
@@ -152,7 +159,7 @@
                 <a id='arrow-up' class='arrow'>&#8679;</a>
                 <a id='arrow-down' class='arrow'>&#8681;</a>
                 <strong style='font-size: 2rem;'>Listen</strong>
-                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;"><strong>remove</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal ' method='post'>
@@ -162,14 +169,14 @@
                       <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='Task-1'>
                     </div>
                     <div class='col-sm-1'>
-                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                      <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                     <div class='col-sm-2'></div>
                     <div class='col-sm-9'>
                       <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='mytask-x'>
                     </div>
                     <div class='col-sm-1'>
-                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                      <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                     <div class='col-sm-2'></div>
                     <div class='col-sm-9'>
@@ -187,7 +194,7 @@
                 <a id='arrow-up' class='arrow'>&#8679;</a>
                 <a id='arrow-down' class='arrow'>&#8681;</a>
                 <strong style='font-size: 2rem;'>Handoff</strong>
-                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;"><strong>remove</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal ' method='post'>
@@ -200,28 +207,22 @@
                                           </select>
                     </div>
                     <div class='col-sm-1'>
-                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                      <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                   <div class='form-group'>
                     <label class='col-sm-2 control-label'>TwiML URL</label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-10'>
                       <input required name='actions[3][handoff][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'>
-                    </div>
-                    <div class='col-sm-1'>
-                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                   <div class='form-group'>
                     <label class='col-sm-2 control-label'>Method</label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-10'>
                       <select name='actions[1][handoff][methpd]' class="form-control m-bot15">
                                               <option>GET</option>
                                               <option>POST</option>
                                           </select>
-                    </div>
-                    <div class='col-sm-1'>
-                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                 </form>
@@ -232,29 +233,23 @@
                 <a id='arrow-up' class='arrow'>&#8679;</a>
                 <a id='arrow-down' class='arrow'>&#8681;</a>
                 <strong style='font-size: 2rem;'>Redirect</strong>
-                <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; line-height:50%; margin-top:7px;"><strong>-</strong></button>
+                <button class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;"><strong>remove</strong></button>
               </header>
               <div class='panel-body'>
                 <form class='form-horizontal ' method='post'>
                   <div class='form-group'>
                     <label class='col-sm-2 control-label'>URL</label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-10'>
                       <input required name='actions[3][redirect][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'>
-                    </div>
-                    <div class='col-sm-1'>
-                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                   <div class='form-group'>
                     <label class='col-sm-2 control-label'>Method</label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-10'>
                       <select name='actions[1][redirect][method]' class="form-control m-bot15">
                                               <option>GET</option>
                                               <option>POST</option>
                                           </select>
-                    </div>
-                    <div class='col-sm-1'>
-                      <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:left; line-height:50%; margin-top:7px;"><strong>-</strong></button>
                     </div>
                   </div>
                 </form>
@@ -264,6 +259,6 @@
           </div>
         </div>
 </body>
-<button onclick='javascript:createJSON()' class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;">Save</button>
+<button onclick='javascript:createJSON()' class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f;">Save</button>
 <script src='{% static 'edit2.js' %}'></script>
 </html>

@@ -13,7 +13,7 @@
   <link href='{% static 'css/bootstrap.min.css'%}' rel='stylesheet'>
   <link href='{% static 'css/bootstrap-theme.css'%}' rel='stylesheet'>
   <link href='{% static 'css/elegant-icons-style.css'%}' rel='stylesheet' />
-  <link href='{% static 'css/font-awesome.min.css'%}' rel='stylesheet' />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <link href='{% static 'css/style.css'%}' rel='stylesheet'>
   <link href='{% static 'css/style-responsive.css'%}' rel='stylesheet' />
   <link href='{% static 'main.css' %}' rel='stylesheet' />
@@ -33,10 +33,17 @@
   <section id='container' class=''>
 
     <header class='header dark-bg'>
-
-
-      <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
-
+      <div class="row">
+        <div class="col-lg-10">
+          <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+        </div>
+        <div class="col-lg-1">
+          <a href='#settings' class="logo" style="color:#688a7e; font-size:2rem;">Settings</a>
+        </div>
+        <div class="col-lg-1">
+          <a href='{% url 'login' %}' class="logo" style="color:#688a7e; font-size:2rem;">Logout</a>
+        </div>
+      </div>
     </header>
 
     <aside>
@@ -98,7 +105,7 @@
             <h2 class='page-header'>{{task.unique_name}}</h2>
           </div>
           <div class='col-lg-2'>
-              <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; margin-top:10px;"><strong>+</strong></button>
+              <button onclick="location.href='{% url 'delete_task' assistant.sid task.sid %}'" class="btn btn-primary" style="border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; margin-top:10px;">DELETE</button>
           </div>
         </div>
         <div class="row">
@@ -120,10 +127,12 @@
             </a>
           </div>
           <div class="col-lg-6">
-            <div class="info-box green-bg hover-card">
-              <div class="count">Train</div>
-              <div class="title">With Phrases</div>
-            </div>
+            <a href="{% url 'edit_samples' assistant.sid task.sid %}">
+              <div class="info-box green-bg hover-card">
+                <div class="count">Train</div>
+                <div class="title">With Phrases</div>
+              </div>
+            </a>
           </div>
         </div>
 </body>

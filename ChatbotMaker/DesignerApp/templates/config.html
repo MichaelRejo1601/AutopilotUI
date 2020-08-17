@@ -64,7 +64,7 @@
                           <span>Tasks</span>
                       </a>
           </li>
-          <li class='active'>
+          <li>
             <a class='active' href='{% url 'tree' assistant.sid %}'>
 
                           <span>Dialouge Tree</span>
@@ -86,7 +86,7 @@
                           <span>Simulator</span>
                       </a>
           </li>
-          <li>
+          <li class="active">
             <a class='' href='{% url 'config' assistant.sid %}'>
 
                           <span>Config</span>
@@ -103,7 +103,7 @@
       <section class='wrapper'>
         <div class='row'>
           <div class='col-lg-10'>
-            <h2 class='page-header'>Dialouge Tree</h2>
+            <h2>Config</h2>
           </div>
           <div class='col-lg-2'>
           </div>
@@ -113,27 +113,15 @@
             <ol class='breadcrumb'>
               <li><a href='{% url 'get_assistants' %}'>Dashboard</a></li>
               <li><a href='{% url 'get_assistant' assistant.sid %}'>{{assistant.unique_name}}</a></li>
-              <li><a href='{% url 'tree' assistant.sid %}'>Tree</a></li>
+              <li><a href='{% url 'config' assistant.sid %}'>Config</a></li>
             </ol>
           </div>
         </div>
-        <div class='row' style="padding-left:15px; padding-right:15px;">
-          {% for node in pc_list %}
-          <div class="col-lg-12 hover-card">
-            <a href="#" class="panel" style="color:inherit;">
-              <header class="panel-heading">
-                <h3 class="parent" id="{{node.value}}parent">{{node.value}}</h3>
-              </header>
-              <div class="panel-body">
-                <h4 style="margin-top:0;">Connections</h4>
-                {% for child in node.children %}
-                  <div class="col-lg-12 child" id="{{child}}child"><a href="#{{child}}parent" onclick="findParent('{{child}}')">- {{child}}</a></div>
-                {% endfor %}
-              </div>
-            </a>
-          </div>
-          {% endfor %}
+      <div class="row">
+        <div class="col-lg-12">
         </div>
+      </div>
 </body>
+<button onclick='' class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;">Save</button>
 <script src="{% static 'tree.js' %}"></script>
 </html>

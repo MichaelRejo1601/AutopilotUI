@@ -34,10 +34,17 @@
   <section id='container' class=''>
 
     <header class='header dark-bg'>
-
-
-      <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
-
+      <div class="row">
+        <div class="col-lg-10">
+          <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+        </div>
+        <div class="col-lg-1">
+          <a href='#settings' class="logo" style="color:#688a7e; font-size:2rem;">Settings</a>
+        </div>
+        <div class="col-lg-1">
+          <a href='{% url 'login' %}' class="logo" style="color:#688a7e; font-size:2rem;">Logout</a>
+        </div>
+      </div>
     </header>
 
     <section id='main-content' style="margin-left:5%; margin-right:5%;">
@@ -47,7 +54,7 @@
             <h2 class='page-header'>Dashboard</h2>
           </div>
           <div class='col-lg-2'>
-              <button class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; margin-top:10px; margin-bottom:10px;"><strong>+</strong></button>
+              <button onclick="create();" class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; margin-top:10px; margin-bottom:10px;"><strong>+</strong></button>
           </div>
         </div>
         <div class="row">
@@ -72,4 +79,12 @@
           {% endfor %}
         </div>
 </body>
+<script>
+function create(){
+  var unique_name = prompt('Please Enter A Unique Assistant Name')
+  if(unique_name !== null && unique_name !== ""){
+    location.href='/assistants/create/' + unique_name + '/'
+  }
+}
+</script>
 </html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link rel='shortcut icon' href='img/favicon.png'>
+  {% load static %}
+  <title>ChatBot Maker</title>
+
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
+  <link href='{% static 'css/bootstrap.min.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/bootstrap-theme.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/elegant-icons-style.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/font-awesome.min.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/style.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/style-responsive.css'%}' rel='stylesheet' />
+  <link href='{% static 'main.css' %}' rel='stylesheet' />
+  <style>
+    .background{
+      background-color: #688a7e;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 100 60'%3E%3Cg %3E%3Crect fill='%23688a7e' width='11' height='11'/%3E%3Crect fill='%236c8d81' x='10' width='11' height='11'/%3E%3Crect fill='%23708f84' y='10' width='11' height='11'/%3E%3Crect fill='%23749287' x='20' width='11' height='11'/%3E%3Crect fill='%2377948a' x='10' y='10' width='11' height='11'/%3E%3Crect fill='%237b968c' y='20' width='11' height='11'/%3E%3Crect fill='%237e998f' x='30' width='11' height='11'/%3E%3Crect fill='%23829b92' x='20' y='10' width='11' height='11'/%3E%3Crect fill='%23859d94' x='10' y='20' width='11' height='11'/%3E%3Crect fill='%2388a097' y='30' width='11' height='11'/%3E%3Crect fill='%238ba299' x='40' width='11' height='11'/%3E%3Crect fill='%238ea49c' x='30' y='10' width='11' height='11'/%3E%3Crect fill='%2391a69e' x='20' y='20' width='11' height='11'/%3E%3Crect fill='%2394a8a1' x='10' y='30' width='11' height='11'/%3E%3Crect fill='%2397aaa3' y='40' width='11' height='11'/%3E%3Crect fill='%239aaca5' x='50' width='11' height='11'/%3E%3Crect fill='%239caea8' x='40' y='10' width='11' height='11'/%3E%3Crect fill='%239fb0aa' x='30' y='20' width='11' height='11'/%3E%3Crect fill='%23a2b2ac' x='20' y='30' width='11' height='11'/%3E%3Crect fill='%23a4b4ae' x='10' y='40' width='11' height='11'/%3E%3Crect fill='%23a7b6b1' y='50' width='11' height='11'/%3E%3Crect fill='%23a9b8b3' x='60' width='11' height='11'/%3E%3Crect fill='%23acbab5' x='50' y='10' width='11' height='11'/%3E%3Crect fill='%23aebcb7' x='40' y='20' width='11' height='11'/%3E%3Crect fill='%23b1beb9' x='30' y='30' width='11' height='11'/%3E%3Crect fill='%23b3c0bb' x='20' y='40' width='11' height='11'/%3E%3Crect fill='%23b5c2bd' x='10' y='50' width='11' height='11'/%3E%3Crect fill='%23b8c4bf' x='70' width='11' height='11'/%3E%3Crect fill='%23bac5c1' x='60' y='10' width='11' height='11'/%3E%3Crect fill='%23bcc7c3' x='50' y='20' width='11' height='11'/%3E%3Crect fill='%23bfc9c5' x='40' y='30' width='11' height='11'/%3E%3Crect fill='%23c1cbc7' x='30' y='40' width='11' height='11'/%3E%3Crect fill='%23c3ccc9' x='20' y='50' width='11' height='11'/%3E%3Crect fill='%23c5cecb' x='80' width='11' height='11'/%3E%3Crect fill='%23c7d0cd' x='70' y='10' width='11' height='11'/%3E%3Crect fill='%23c9d2cf' x='60' y='20' width='11' height='11'/%3E%3Crect fill='%23ccd3d0' x='50' y='30' width='11' height='11'/%3E%3Crect fill='%23ced5d2' x='40' y='40' width='11' height='11'/%3E%3Crect fill='%23d0d7d4' x='30' y='50' width='11' height='11'/%3E%3Crect fill='%23d2d8d6' x='90' width='11' height='11'/%3E%3Crect fill='%23d4dad8' x='80' y='10' width='11' height='11'/%3E%3Crect fill='%23d6dcd9' x='70' y='20' width='11' height='11'/%3E%3Crect fill='%23d8dddb' x='60' y='30' width='11' height='11'/%3E%3Crect fill='%23dadfdd' x='50' y='40' width='11' height='11'/%3E%3Crect fill='%23dce0df' x='40' y='50' width='11' height='11'/%3E%3Crect fill='%23dee2e0' x='90' y='10' width='11' height='11'/%3E%3Crect fill='%23dfe4e2' x='80' y='20' width='11' height='11'/%3E%3Crect fill='%23e1e5e4' x='70' y='30' width='11' height='11'/%3E%3Crect fill='%23e3e7e5' x='60' y='40' width='11' height='11'/%3E%3Crect fill='%23e5e8e7' x='50' y='50' width='11' height='11'/%3E%3Crect fill='%23e7eae9' x='90' y='20' width='11' height='11'/%3E%3Crect fill='%23e9ebea' x='80' y='30' width='11' height='11'/%3E%3Crect fill='%23ebedec' x='70' y='40' width='11' height='11'/%3E%3Crect fill='%23eceeee' x='60' y='50' width='11' height='11'/%3E%3Crect fill='%23eef0ef' x='90' y='30' width='11' height='11'/%3E%3Crect fill='%23f0f1f1' x='80' y='40' width='11' height='11'/%3E%3Crect fill='%23f2f3f2' x='70' y='50' width='11' height='11'/%3E%3Crect fill='%23f4f4f4' x='90' y='40' width='11' height='11'/%3E%3Crect fill='%23f5f6f5' x='80' y='50' width='11' height='11'/%3E%3Crect fill='%23f7f7f7' x='90' y='50' width='11' height='11'/%3E%3C/g%3E%3C/svg%3E");
+      background-attachment: fixed;
+      background-size: cover;
+      height:91vh;
+      box-shadow: -1px 0px 5px 0px rgba(125,125,125,1);
+      text-align: center;
+      padding-top: 5%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <section id='container' class=''>
+
+    <header class='header dark-bg'>
+      <div class="row">
+        <div class="col-lg-12">
+          <a href='{% url 'login' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+        </div>
+      </div>
+    </header>
+
+    <section id='main-content' style="margin-left:2%;">
+      <section class='wrapper' style="padding-top:0; padding-bottom:0;">
+        <div class='row'>
+          <div class='col-lg-6' style="padding-right:5%;">
+            <h2 class='page-header'>Login</h2>
+            <div class="row">
+              <div class="col-lg-12">
+                <section class='panel'>
+                  <header class='panel-heading'>
+                  </header>
+                  <div class='panel-body'>
+                    <form class='form-horizontal ' method='post'>
+                      <div class='form-group' style="border-bottom:0px;">
+                        <label class='col-sm-2'>User</label>
+                        <div class='col-sm-10'>
+                          <input required type='text' class='form-control'>
+                        </div>
+                      </div>
+                      <div class='form-group' style="border-bottom:0px;">
+                        <label class='col-sm-2'>Password</label>
+                        <div class='col-sm-10'>
+                          <input required type='password' class='form-control'>
+                        </div>
+                      </div>
+                      <button onclick='javascript:createJSON()' class="btn btn-primary" style="border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;">Login</button>
+                    </form>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div class='col-lg-6 background'>
+            <h1 style="text-shadow: 0px 0px 5px rgba(0, 0, 0, 1); color:white; font-family:Arial, Helvetica, sans-serif;">[AD PANEL]</h1>
+            <h1 style="text-shadow: 0px 0px 5px rgba(0, 0, 0, 1); color:white; font-family:Arial, Helvetica, sans-serif;">CHATBOTS MADE</h1>
+            <h1 style="text-shadow: 0px 0px 5px rgba(0, 0, 0, 1); color:white; font-family:Arial, Helvetica, sans-serif; ">FAST.</h1>
+            <h1 style="text-shadow: 0px 0px 5px rgba(0, 0, 0, 1); color:white; font-family:Arial, Helvetica, sans-serif;">EASY.</h1>
+            <h1 style="text-shadow: 0px 0px 5px rgba(0, 0, 0, 1); color:white; font-family:Arial, Helvetica, sans-serif; ">INTUITIVE.</h1>
+          </div>
+        </div>
+
+</body>
+</html>
