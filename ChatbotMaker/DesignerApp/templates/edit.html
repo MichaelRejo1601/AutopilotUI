@@ -1,78 +1,261 @@
 <!DOCTYPE html>
-<html lang='en' dir='ltr'>
-  <head>
-    <meta charset='utf-8'>
-    <title></title>
-    {% load static %}
-    {% load crispy_forms_tags %}
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-    <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-  </head>
-  <body>
-    {{my_err}}
-    <div id="add-action-menu">
-      <button id="add-action">+</button>
-      <div id="menu">
-       <div id="new-action">say</div>
-       <div id="new-action">listen</div>
-       <div id="new-action">play</div>
-       <div id="new-action">handoff</div>
-       <div id="new-action">redirect</div>
-      </div>
-    </div>
-    <form id='actions-form' action='/assistants/{{assistant.sid}}/tasks/{{task.sid}}/edit/' method='POST' name='actions-form'>
-      <!-- <label for='action'>action</label>
-      <select id='action' name='action'>
-        <option value=say>say</option>
-        <option value=play>play</option>
-        <option value=listen>listen</option>
-        <option value=collect>collect</option>
-        <option value=handoff>handoff</option>
-        <option value=redirect>redirect</option>
-        <option value=remember>remember</option>
-        <option value=show>show</option>
-      </select>
-      <div class='inline-form'>
-        <legend>Say</legend><button id="action">-</button>
-        <label for='speech'>Text</label>
-        <input required id='speech' type='text' name='actions[{order}][say][speech]' placeholder='Hello!'/>
-      </div>
-      <div class='inline-form'>
-        <legend>Play</legend><button id="action">-</button>
-        <label for='loop'>Loop</label>
-        <input type='number' id='loop' name='actions[{order}][play][loop]' placeholder='3'/>
-        <label for='url'>URL</label>
-        <input required id='url' type='url' name='actions[{order}][play][url]' placeholder='https://www.mysite.com/song.mp3'/>
-      </div>
-      <div id='listen' class='inline-form'>
-        <legend>Listen</legend><button id="action">-</button>
-        <label for='tasks'>Tasks</label><button id="add-listen">+</button>
-        <input type='text' id='tasks' name='actions[{order}][listen][tasks][]' placeholder='task-1'/>
-      </div>
-      <div class='inline-form'>
-        <legend>Handoff</legend><button id="action">-</button>
-        <label for='chanel'>Chanel</label>
-        <select required id='chanel' name='actions[{order}][handoff][chanel]'><option>voice</option></select>
-        <label for='uri'>TwiML URI</label>
-        <input required id='uri' type='url' name='actions[{order}][handoff][uri]' placeholder='TwiML URI'/>
-        <label for='method'>Method</label>
-        <select id='method' name='actions[{order}][handoff][method]'><option>GET</option><option>POST</option></select>
-      </div>
-      <div class='inline-form'>
-        <legend>Redirect</legend><button id="action">-</button>
-        <label for='task'>Task or URL</label>
-        <input required id='task' type='text' name='actions[{order}][redirect]' placeholder='task://my-task1 OR https://www.mysite.com/my-redirect/'/>
-        <label for='method'>Method</label>
-        <select id='method' name='actions[{order}][redirect][method]'><option>GET</option><option>POST</option></select>
-      </div> -->
-      {{form_elements|safe}}
-    </form>
-    <button onclick='javascript:createJSON()'>Save</button>
-    <div class="result">
+<html lang='en'>
 
-    </div>
-  </body>
-  <script src='{% static 'edit.js' %}'></script>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link rel='shortcut icon' href='img/favicon.png'>
+  {% load static %}
+  <title>ChatBot Maker</title>
+
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='{% static 'jquery.serialize-object.min.js' %}'></script>
+  <link href='{% static 'css/bootstrap.min.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/bootstrap-theme.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/elegant-icons-style.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/font-awesome.min.css'%}' rel='stylesheet' />
+  <link href='{% static 'css/style.css'%}' rel='stylesheet'>
+  <link href='{% static 'css/style-responsive.css'%}' rel='stylesheet' />
+  <link href='{% static 'main.css' %}' rel='stylesheet' />
+</head>
+
+<body>
+
+  <section id='container' class=''>
+
+    <header class='header dark-bg'>
+      <div class='row'>
+        <div class='col-lg-10'>
+          <a href='{% url 'get_assistants' %}' class='logo'>Chatbot <span class='lite'>Maker</span></a>
+        </div>
+        <div class='col-lg-1'>
+          <a href='#settings' class='logo' style='color:#688a7e; font-size:2rem;'>Settings</a>
+        </div>
+        <div class='col-lg-1'>
+          <a href='{% url 'login' %}' class='logo' style='color:#688a7e; font-size:2rem;'>Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <aside>
+      <div id='sidebar' class='nav-collapse '>
+
+        <ul class='sidebar-menu'>
+          <li>
+            <a class='' href='{% url 'get_assistant' assistant.sid %}'>
+                          <span><strong>{{assistant.unique_name}}</strong></span>
+
+                      </a>
+
+          </li>
+          <li class='active'>
+            <a class='' href='{% url 'get_tasks' assistant.sid %}'>
+
+                          <span>Tasks</span>
+                      </a>
+          </li>
+          <li>
+            <a class='' href='{% url 'tree' assistant.sid %}'>
+
+                          <span>Dialouge Tree</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class='' href='{% url 'fields' assistant.sid %}'>
+
+                          <span>Fields</span>
+
+                      </a>
+
+          </li>
+          <li>
+            <a class='' href='{% url 'simulator' assistant.sid %}'>
+
+                          <span>Simulator</span>
+                      </a>
+          </li>
+          <li>
+            <a class='' href='{% url 'config' assistant.sid %}'>
+
+                          <span>Config</span>
+
+                      </a>
+
+          </li>
+
+
+      </div>
+    </aside>
+
+    <section id='main-content'>
+      <section class='wrapper'>
+        <div class='row'>
+          <div class='col-lg-10'>
+            <h2 class='page-header'>Edit Task Actions</h2>
+          </div>
+          <div class='col-lg-2'>
+              <button class='btn btn-primary' style='border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; float:right; margin-top:10px;'><strong>+</strong></button>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-lg-12'>
+            <ol class='breadcrumb'>
+              <li><a href='{% url 'get_assistants' %}'>Dashboard</a></li>
+              <li><a href='{% url 'get_assistant' assistant.sid %}'>{{assistant.unique_name}}</a></li>
+              <li><a href='{% url 'get_task' assistant.sid task.sid %}'>{{task.unique_name}}</a></li>
+              <li><a href='{% url 'edit_actions' assistant.sid task.sid %}'></a>Edit</li>
+            </ol>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-lg-12'>
+            <!-- Starts -->
+          <section id='say' class='panel'>
+              <header class='panel-heading'>
+                  <a id='arrow-up' class='arrow'>&#8679;</a>
+                  <a id='arrow-down' class='arrow'>&#8681;</a>
+                  <strong style='font-size: 2rem;'>Say</strong>
+                  <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>remove</strong></button>
+              </header>
+              <div class='panel-body'>
+                <form class='form-horizontal' method='post'>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>Text</label>
+                    <div class='col-sm-10'>
+                      <input required name='actions[0][say][speech]' type='text' class='form-control' placeholder='Hello there! How may I help you?'>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <section id='play' class='panel'>
+              <header class='panel-heading'>
+                <a id='arrow-up' class='arrow'>&#8679;</a>
+                <a id='arrow-down' class='arrow'>&#8681;</a>
+                <strong style='font-size: 2rem;'>Play</strong>
+                <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>remove</strong></button>
+              </header>
+              <div class='panel-body'>
+                <form class='form-horizontal ' method='post'>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>URL</label>
+                    <div class='col-sm-10'>
+                      <input required name='actions[1][play][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'>
+                    </div>
+                  </div>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>Loop</label>
+                    <div class='col-sm-10'>
+                      <input required name='actions[1][play][loop]' type='number' class='form-control' placeholder='1'>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <section id='listen' class='panel'>
+              <header class='panel-heading'>
+                <a id='arrow-up' class='arrow'>&#8679;</a>
+                <a id='arrow-down' class='arrow'>&#8681;</a>
+                <strong style='font-size: 2rem;'>Listen</strong>
+                <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>remove</strong></button>
+              </header>
+              <div class='panel-body'>
+                <form class='form-horizontal ' method='post'>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>Tasks</label>
+                    <div class='col-sm-9'>
+                      <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='Task-1'>
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:left; line-height:50%; margin-top:7px;'><strong>-</strong></button>
+                    </div>
+                    <div class='col-sm-2'></div>
+                    <div class='col-sm-9'>
+                      <input id='tasks' name='actions[2][listen][tasks][]' type='text' class='form-control' placeholder='mytask-x'>
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:left; line-height:50%; margin-top:7px;'><strong>-</strong></button>
+                    </div>
+                    <div class='col-sm-2'></div>
+                    <div class='col-sm-9'>
+
+                    </div>
+                    <div class='col-sm-1'>
+                      <button class='btn btn-primary' style='border-color:#688a7e; background-color: #F7F7F7; color:#688a7e; margin-top:10px;'><strong>+</strong></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <section id='handoff' class='panel'>
+              <header class='panel-heading'>
+                <a id='arrow-up' class='arrow'>&#8679;</a>
+                <a id='arrow-down' class='arrow'>&#8681;</a>
+                <strong style='font-size: 2rem;'>Handoff</strong>
+                <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>remove</strong></button>
+              </header>
+              <div class='panel-body'>
+                <form class='form-horizontal ' method='post'>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>Chanel</label>
+                    <div class='col-sm-10'>
+                      <select name='actions[1][handoff][chanel]' class='form-control m-bot15'>
+                                              <option>Voice</option>
+                                              <option>Text</option>
+                                          </select>
+                    </div>
+                  </div>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>TwiML URL</label>
+                    <div class='col-sm-10'>
+                      <input required name='actions[3][handoff][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'>
+                    </div>
+                  </div>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>Method</label>
+                    <div class='col-sm-10'>
+                      <select name='actions[1][handoff][methpd]' class='form-control m-bot15'>
+                                              <option>GET</option>
+                                              <option>POST</option>
+                                          </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            <section id='handoff' class='panel'>
+              <header class='panel-heading'>
+                <a id='arrow-up' class='arrow'>&#8679;</a>
+                <a id='arrow-down' class='arrow'>&#8681;</a>
+                <strong style='font-size: 2rem;'>Redirect</strong>
+                <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>remove</strong></button>
+              </header>
+              <div class='panel-body'>
+                <form class='form-horizontal ' method='post'>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>URL</label>
+                    <div class='col-sm-10'>
+                      <input required name='actions[3][redirect][url]' type='url' class='form-control' placeholder='https://wwww.mysite.com/song.mp3'>
+                    </div>
+                  </div>
+                  <div class='form-group'>
+                    <label class='col-sm-2 control-label'>Method</label>
+                    <div class='col-sm-10'>
+                      <select name='actions[1][redirect][method]' class='form-control m-bot15'>
+                                              <option>GET</option>
+                                              <option>POST</option>
+                                          </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+            {{form_elements|safe}}
+          </div>
+        </div>
+</body>
+<button onclick='javascript:createJSON()' class='btn btn-primary' style='border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;'>Save</button>
+<script src='{% static 'edit.js' %}'></script>
 </html>

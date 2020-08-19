@@ -68,7 +68,7 @@ function clean(obj, bstring, bobj, barray){
 }
 function updateArr(obj){
   arr = [];
-  var list = document.getElementsByClassName('inline-form');
+  var list = document.getElementsByClassName('panel');
   for (i = 0; i < list.length; i++){
     arr.push(list[i].id);
   }
@@ -89,7 +89,7 @@ function createJSON(){
   // obj[list[0].name] = schem[list[0].name]
   // for (input in list[0].innerHTML.getElementsByTagName("input"))
   // console.log(obj)
-  var obj = $("#actions-form").serializeObject();
+  var obj = $('.form-horizontal').serializeObject();
   var token = obj.csrfmiddlewaretoken;
   delete obj.csrfmiddlewaretoken;
   obj = updateArr(obj);
@@ -97,7 +97,7 @@ function createJSON(){
   obj = clean(obj, bstring, bobj, barray);
   console.log(obj);
   $.post(window.location.href, {new_array:JSON.stringify({"arr":arr}),data:JSON.stringify(obj),csrfmiddlewaretoken:token}, function (data) {
-      window.location.reload()
+      window.location.reload()//add error here
   }, "html")
 }
 
@@ -109,19 +109,13 @@ $(document).ready(function(){
       $(document).on("dblclick", "#tasks" , function() {
           $(this).remove();
       });
-      $(document).on("hover", "#arrow-up", function(){
-          console.log("Test1");
-      });
-      $(document).on("hover", "#arrow-down", function(){
-          console.log("Test2");
-      });
       $(document).on("click", "#action" , function() {
           $(this).parent().remove();
       });
       $(document).on("click", "#new-action" , function() {
           $('#menu').toggle();
           $("#add-action").toggleClass('rotate');
-          var obj = $("#actions-form").serializeObject();
+          var obj = $('.form-horizontal').serializeObject();
           obj = updateArr(obj);
           arr.push($(this).html())
           console.log(arr)
