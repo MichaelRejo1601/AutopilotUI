@@ -109,13 +109,24 @@
           </div>
         </div>
         <div class='row'>
-
+          <div class="col-lg-12">
+            <div class='row'>
+              <div class="col-lg-12">
+                <a href="{% url 'get_assistant' assistant.sid %}">
+                  <div class="info-box blue-bg hover-card">
+                    <div class="count">Build</div>
+                    <div class="title">Bot</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 </body>
 <script>
 function confirm(){
-  var response = prompt("To Confirm Assistant Deletion, Please Print Assistant's Unique Name:")
-  if(response === "{{assistant.unique_name}}"){
+  var response = prompt("To Confirm Assistant Deletion, Please Print Chatbot's Unique Name:")
+  if(response.toLowerCase() === "{{assistant.unique_name}}".toLowerCase()){
     location.href='{% url 'delete_assistant' assistant.unique_name %}'
   }
 }

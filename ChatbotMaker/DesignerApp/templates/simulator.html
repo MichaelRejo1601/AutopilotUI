@@ -26,12 +26,54 @@
     .hover-card:hover{
       box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.75);
     }
+    .cntr {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .darker {
+    border-color: #ccc;
+    background-color: #ddd;
+  }
+
+  .cntr::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .cntr img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
+  }
+
+  .cntr img.right {
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
+  }
+
+  .time-right {
+    float: right;
+    color: #aaa;
+  }
+
+  .time-left {
+    float: left;
+    color: #999;
+  }
   </style>
 </head>
 
 <body>
 
-  <section id='container' class=''>
+  <section id='cntr' class=''>
 
     <header class='header dark-bg'>
       <div class="row">
@@ -99,7 +141,7 @@
       </div>
     </aside>
 
-    <section id='main-content'>
+    <section id='main-content' style="margin-right:5%;">
       <section class='wrapper'>
         <div class='row'>
           <div class='col-lg-10'>
@@ -119,7 +161,38 @@
         </div>
       <div class="row">
         <div class="col-lg-12">
+          <div class="cntr">
+            <p>Message 1</p>
+            <span class="time-right">11:00</span>
+          </div>
+
+          <div class="cntr darker">
+            <p>Message 2</p>
+            <span class="time-left">11:01</span>
+          </div>
+
+          <div class="cntr">
+            <p>Message 3</p>
+            <span class="time-right">11:02</span>
+          </div>
+
+          <div class="cntr darker">
+            <p>Message 4</p>
+            <span class="time-left">11:05</span>
+          </div>
         </div>
+        <form class="form-horizontal " method="get">
+          <div class="row" style="margin-left:5%;">
+            <div class="col-lg-9">
+              <div class="form-group">
+                <input type="text" class="form-control round-input" style="border: 1px solid #688a7e;">
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <button onclick='' class='btn btn-primary' style='border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;'>Send</button>
+            </div>
+          </div>
+        </form>
       </div>
 </body>
 <script src="{% static 'tree.js' %}"></script>

@@ -17,15 +17,6 @@
   <link href='{% static 'css/style.css'%}' rel='stylesheet'>
   <link href='{% static 'css/style-responsive.css'%}' rel='stylesheet' />
   <link href='{% static 'main.css' %}' rel='stylesheet' />
-  <style>
-    .hover-card {
-      box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
-      transition: box-shadow 0.3s;
-    }
-    .hover-card:hover{
-      box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.75);
-    }
-  </style>
 </head>
 
 <body>
@@ -119,6 +110,99 @@
           </div>
         </div>
         <div class='row'>
+          <div class="col-lg-8">
+            <form class="form-horizontal" method="post">
+              <div class="row" style="margin:0.5%;">
+                <div class="col-lg-10">
+                  <div class="form-group">
+                    <input type="text" class="form-control" style="border: 1px solid #688a7e;">
+                  </div>
+                </div>
+                <div class="col-lg-1">
+                  <button onclick='' class='btn btn-primary' style='border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;'>Add Sample</button>
+                </div>
+              </div>
+            </form>
+            <div class="col-lg-12" style="margin-bottom:5%;">
+              Tip: Create tags such as {sizes} on the left and use them for dynamic recognition.
+            </div>
+            {% for sample in samples %}
+            <div class="panel">
+              <header class="panel-heading">
+                <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>-</strong></button>
+              </header>
+              <div class="panel-body">
+                {{sample.tagged_text}}
+              </div>
+          </div>
+          {% endfor %}
         </div>
+        <div class="col-lg-4">
+          <section class="panel">
+            <div class="panel-heading">
+              <h3>Add Field Tags</h3>
+            </div>
+            <div class="panel-body">
+              <form class="form-horizontal " method="get">
+                <div class="form-group">
+                  <div class="row" style="padding-left:2%;">
+                    <div class="col-lg-6">
+                      <select class="form-control m-bot15">
+                                            {% for field in fields %}
+                                            <option>{{field.unique_name}}</option>
+                                            {% endfor %}
+                                              <option>Twilio.YES_NO</option>
+                                              <option>Twilio.NUMBER</option>
+                                              <option>Twilio.PHONE_NUMBER</option>
+                                              <option>Twilio.DATE</option>
+                                              <option>Twilio.TIME</option>
+                                              <option>Twilio.FIRST_NAME</option>
+                                              <option>Twilio.LAST_NAME</option>
+                                              <option>Twilio.EMAIL</option>
+                                              <option>Twilio.MONTH</option>
+                                              <option>Twilio.DAY_OF_WEEK</option>
+                                              <option>Twilio.US_STATE</option>
+                                              <option>Twilio.COUNTRY</option>
+                                              <option>Twilio.CITY</option>
+                                              <option>Twilio.CURRENCY</option>
+                                              <option>Twilio.COUNTRY_ISO_ALPHA2</option>
+                                              <option>Twilio.COUNTRY_ISO_ALPHA3</option>
+                                              <option>Twilio.LANGUAGE</option>
+                                              <option>Twilio.NUMBER_SEQUENCE</option>
+                                              <option>Twilio.ALPHANUMERIC</option>
+
+                                          </select>
+                    </div>
+                    <div class="col-lg-4">
+                      <input placeholder="unique name" type="text" class="form-control" style="border: 1px solid #688a7e;">
+                    </div>
+                    <div class="col-lg-1">
+                      <button onclick='' class='btn btn-primary' style='border-color:#688a7e; background-color: #F7F7F7; color:#688a7e;'>+</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="panel">
+                <div class="panel-heading">
+                  Field Type: (Field_Type)
+                  <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>-</strong></button>
+                </div>
+                <div class="panel-body">
+                  Usable Tag: {Tag}
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-heading">
+                  Field Type: TWILIO.NUMERIC
+                  <button class='btn btn-primary' style='border-color:#d9534f; background-color: #F7F7F7; color:#d9534f; float:right; line-height:50%; margin-top:7px;'><strong>-</strong></button>
+                </div>
+                <div class="panel-body">
+                  Usable Tag: {unique_name}
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
 </body>
 </html>
